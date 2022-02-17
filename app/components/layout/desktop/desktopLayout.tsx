@@ -22,6 +22,7 @@ interface DesktopLayoutProps {
 const StyledLink = styled(Link)(({ theme }) => ({
         padding: "2% 3%",
         marginRight: "2px",
+        fontWeight: 600,
         '&:hover': { backgroundColor: theme.palette.action.hover }
     }))
 
@@ -83,6 +84,7 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                         borderRadius: 0,
                         justifyContent: "center",
                         alignItems: "center",
+                        fontWeight: 500,
                     }}
                     container
                     spacing={2}
@@ -159,7 +161,14 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                                 </Box>
                             </Grid>
                             <Grid item xs={9} md={10}>
-                                <Box textAlign="center">
+                                <Box
+                                textAlign="center"
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                                >
                                     <StyledLink href="/">Naslovnica</StyledLink>
                                     <StyledLink href="/novosti">Novosti</StyledLink>
                                     <Button
@@ -173,7 +182,7 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                                             textDecoration: "underline",
                                             textDecorationColor: "rgba(144, 202, 249, 0.4)",
                                             fontSize: "1rem",
-                                            fontWeight: "400",
+                                            fontWeight: "600",
                                             lineHeight: "1.2",
                                             padding: "2% 3%",
                                             marginRight: "2px",

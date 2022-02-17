@@ -142,6 +142,7 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                             flexWrap: "nowrap",
                             flexDirection: "column",
                             position: "relative",
+                            fontWeight: 500,
                         }}
                         container
                         spacing={2}
@@ -243,7 +244,7 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} sx={{ width: "100%" }}>
-                            <Box textAlign="center" sx={{ display: "flex", flexDirection: "column", fontSize: "1.5rem", width: "100%"  }}>
+                            <Box textAlign="center" sx={{ display: "flex", flexDirection: "column", fontSize: "1.5rem", fontWeight: 600, width: "100%"  }}>
                                 <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/">Naslovnica</Link>
                                 <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/novosti">Novosti</Link>
                                 <Button
@@ -257,7 +258,7 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                                         textDecoration: "underline",
                                         textDecorationColor: "rgba(144, 202, 249, 0.4)",
                                         fontSize: "1.5rem",
-                                        fontWeight: "400",
+                                        fontWeight: "600",
                                         lineHeight: "1.2",
                                         marginRight: "2px",
                                         letterSpacing: "0.00938em",
@@ -276,7 +277,7 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                                     'aria-labelledby': 'usluge-i-cjenik',
                                     }}
                                     PaperProps={{
-                                        sx: { minWidth: "100%", left: "0 !important" }
+                                        sx: { minWidth: "100%", left: "0 !important", 'a': { fontWeight: 600 } }
                                     }}
                                 >
                                     <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>

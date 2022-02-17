@@ -9,7 +9,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import createEmotionCache from '../app/utility/createEmotionCache';
-import '../app/styles/globals.css';
+import '../app/styles/globals.scss';
 import CustomThemeProvider from '../app/store/customThemeContext';
 import { LanguageProvider } from '../app/store/languageContext';
 import { ModeProvider } from '../app/store/modeContext';
