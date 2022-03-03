@@ -23,6 +23,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
         padding: "2% 3%",
         marginRight: "2px",
         fontWeight: 600,
+        fontSize: "1.2rem",
         '&:hover': { backgroundColor: theme.palette.action.hover }
     }))
 
@@ -109,7 +110,7 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                         <TopItem>
                             <Link  target="_blank" href="tel:+385916138766" sx={{ display: "flex" }}>
                                 <LocalPhoneIcon sx={{ mr: "8px" }}/>
-                                +385 (9)1 613 8766
+                                +385 (0)91 613 8766
                             </Link>
                         </TopItem>
                     </Grid>
@@ -156,7 +157,7 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                                         width={138}
                                         height={93}
                                         layout="fixed"
-                                        quality={100}
+                                        quality={90}
                                     />
                                 </Box>
                             </Grid>
@@ -170,7 +171,9 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                                 }}
                                 >
                                     <StyledLink href="/">Naslovnica</StyledLink>
-                                    <StyledLink href="/novosti">Novosti</StyledLink>
+                                    {
+                                        //<StyledLink href="/novosti">Novosti</StyledLink>
+                                    }
                                     <Button
                                         id="usluge-i-cjenik"
                                         aria-controls={open ? 'basic-menu' : undefined}
@@ -181,7 +184,7 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                                             textTransform: "none",
                                             textDecoration: "underline",
                                             textDecorationColor: "rgba(144, 202, 249, 0.4)",
-                                            fontSize: "1rem",
+                                            fontSize: "1.2rem",
                                             fontWeight: "600",
                                             lineHeight: "1.2",
                                             padding: "2% 3%",
@@ -230,6 +233,9 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                 <NextBreadcrumbs
                     omitRootLabel={router.pathname === "/"}
                     replaceCharacterList={[{ from: '.', to: ' ' }]}
+                    transformLabel={(title: string) => {
+                        return title.charAt(0).toUpperCase()+title.slice(1).replace(/\-[a-z]/g, match => match.toUpperCase())
+                    }}
                 />
             </Paper>
             <Paper

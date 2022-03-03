@@ -167,7 +167,7 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                             <TopItem>
                                 <Link  target="_blank" href="tel:+385916138766" sx={{ display: "flex" }}>
                                     <LocalPhoneIcon sx={{ mr: "8px" }}/>
-                                    +385 (9)1 613 8766
+                                    +385 (0)91 613 8766
                                 </Link>
                             </TopItem>
                         </Grid>

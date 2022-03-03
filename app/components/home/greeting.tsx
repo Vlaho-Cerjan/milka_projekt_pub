@@ -6,16 +6,7 @@ import useWindowSize from '../../utility/windowSize';
 import Image from 'next/image';
 import SendIcon from '@mui/icons-material/Send';
 
-interface GreetingProps {
-    img: {
-        height: number;
-        src: string;
-        width: number;
-        type?: string;
-    },
-}
-
-const Greeting = ({ img }: GreetingProps) => {
+const Greeting = () => {
     const { width } = useWindowSize();
     const { theme, isDark } = useContext(CustomThemeContext);
 
@@ -35,9 +26,13 @@ const Greeting = ({ img }: GreetingProps) => {
                     alt={"stock photo of a doctor with "+(isDark?'blue':'green')+" background"}
                     quality={90}
                     layout="responsive"
-                    {...img}
+                    width={1920}
+                    height={1072}
+                    sizes="100vw"
+                    src="/images/home/doctor-stock-transparent.png"
                 />
                 <Container
+                    disableGutters
                     sx={{
                     position: "absolute",
                     top: 0,
@@ -55,7 +50,7 @@ const Greeting = ({ img }: GreetingProps) => {
                     height: "100%",
                     alignItems: "center"
                     }}>
-                    <Container maxWidth={false} sx={{ p: "0 !important" }}>
+                    <Container disableGutters maxWidth={false}>
                         <Typography
                         sx={{
                             mb: "16px",
@@ -88,8 +83,16 @@ const Greeting = ({ img }: GreetingProps) => {
                         }}>
                         <Link href="/kontakt">
                             <a>
-                            <Box sx={{ p: "5px 15px", display: "flex", alignItems: "center", fontSize: width<789?"1rem":"1.2rem" }}>
-                                Dogovori Pregled
+                            <Box sx={{
+                                fontFamily: "'El Messiri', sans-serif",
+                                fontWeight: "700",
+                                p: "5px 15px",
+                                display: "flex",
+                                alignItems: "center",
+                                fontSize: width<789?"1rem":"1.3rem",
+                            }}
+                            >
+                                <span>Dogovorite Pregled</span>
                                 <SendIcon sx={{ ml: "12px" }} />
                             </Box>
                             </a>
@@ -134,7 +137,7 @@ const Greeting = ({ img }: GreetingProps) => {
                     <Link href="/kontakt">
                         <a>
                         <Box sx={{ p: "5px 15px", display: "flex", alignItems: "center" }}>
-                            Dogovori Pregled
+                            Dogovorite Pregled
                             <SendIcon sx={{ ml: "12px" }} />
                         </Box>
                         </a>

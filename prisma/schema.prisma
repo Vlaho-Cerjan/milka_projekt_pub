@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admins {
+  id          Int     @id @default(autoincrement())
+  first_name  String? @db.Char(255)
+  last_name   String? @db.Char(255)
+  title       String? @db.Char(255)
+  admin_title String? @db.Char(255)
+  admin_type  String? @db.Char(255)
+  create_date String? @db.Char(255)
+  update_date String? @db.Char(255)
+  delete_date String? @db.Char(255)
+  img_src     String?
+  alt         String?
+}
+
+model blog {
+  id                Int     @id @default(autoincrement())
+  title             String  @db.Char(255)
+  content           String
+  img_src           String?
+  categories        Int[]
+  tags              Int[]
+  slug              String? @db.Char(255)
+  create_date       String? @db.Char(255)
+  update_date       String? @db.Char(255)
+  delete_date       String? @db.Char(255)
+  alt               String?
+  short_description String? @db.Char(500)
+}
+
+model categories {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.Char(255)
+  description String?
+  create_date String? @db.Char(255)
+  update_date String? @db.Char(255)
+  delete_date String? @db.Char(255)
+}
+
+model doctors {
+  id              Int     @id @default(autoincrement())
+  first_name      String  @db.Char(255)
+  aditional_names String? @db.Char(255)
+  last_name       String? @db.Char(255)
+  title           String? @db.Char(255)
+  bio             String?
+  email           String? @db.Char(255)
+  phone           String? @db.Char(255)
+  create_date     String? @db.Char(255)
+  update_date     String? @db.Char(255)
+  delete_date     String? @db.Char(255)
+  img_src         String?
+  slug            String? @db.Char(255)
+  alt             String?
+}
+
+model employes {
+  id              Int     @id @default(autoincrement())
+  first_name      String  @db.Char(255)
+  aditional_names String? @db.Char(255)
+  last_name       String? @db.Char(255)
+  title           String? @db.Char(255)
+  bio             String?
+  email           String? @db.Char(255)
+  phone           String? @db.Char(255)
+  employe_title   String? @db.Char(255)
+  create_date     String? @db.Char(255)
+  update_date     String? @db.Char(255)
+  delete_date     String? @db.Char(255)
+  img_src         String?
+  slug            String? @db.Char(255)
+  alt             String?
+}
+
+model faq {
+  id          Int     @id @default(autoincrement())
+  title       String
+  content     String
+  create_date String? @db.Char(255)
+  update_date String? @db.Char(255)
+  delete_date String? @db.Char(255)
+}
+
+model services {
+  id                  Int                   @id(map: "usluge_pkey") @default(autoincrement())
+  name                String                @db.Char(255)
+  description         String?
+  doctors_id          Int[]
+  create_date         String?               @db.Char(255)
+  update_date         String?               @db.Char(255)
+  delete_date         String?               @db.Char(255)
+  img_src             String?
+  slug                String?               @db.Char(255)
+  alt                 String?
+  services_price_list services_price_list[]
+  subservices         subservices[]
+}
+
+model services_price_list {
+  id            Int          @id(map: "cjenik_pkey") @default(autoincrement())
+  name          String       @db.Char(255)
+  value         Float?
+  discount      Float?
+  usluga_id     Int?
+  pod_usluga_id Int?
+  description   String?
+  value_range   String[]     @db.Char(255)
+  create_date   String?      @db.Char(255)
+  update_date   String?      @db.Char(255)
+  delete_date   String?      @db.Char(255)
+  subservices   subservices? @relation(fields: [pod_usluga_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pod_usluga")
+  services      services?    @relation(fields: [usluga_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usluga")
+}
+
+model subservices {
+  id                  Int                   @id(map: "pod_usluge_pkey") @default(autoincrement())
+  name                String                @db.Char(255)
+  usluga_id           Int
+  description         String?
+  doctors_id          Int[]
+  create_date         String?               @db.Char(255)
+  update_date         String?               @db.Char(255)
+  delete_date         String?               @db.Char(255)
+  img_src             String?
+  slug                String?               @db.Char(255)
+  alt                 String?
+  services            services              @relation(fields: [usluga_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usluga")
+  services_price_list services_price_list[]
+}
+
+model tags {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.Char(255)
+  create_date String? @db.Char(255)
+  update_date String? @db.Char(255)
+  delete_date String? @db.Char(255)
+}
