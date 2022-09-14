@@ -15,14 +15,11 @@ import { LanguageProvider } from '../app/store/languageContext';
 import { ModeProvider } from '../app/store/modeContext';
 import Layout from '../app/components/layout/layout';
 
-import { StylesProvider, createGenerateClassName } from '@mui/styles';
-
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
 const clientSideEmotionCache = createEmotionCache();
-const generateClassName = createGenerateClassName();
 
 const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -30,7 +27,6 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
   return (
     <ModeProvider>
       <LanguageProvider>
-        <StylesProvider generateClassName={generateClassName}>
           <CacheProvider value={emotionCache}>
             <CustomThemeProvider>
               <Layout>
@@ -41,7 +37,6 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
               </Layout>
             </CustomThemeProvider>
           </CacheProvider>
-        </StylesProvider>
       </LanguageProvider>
     </ModeProvider>
   );

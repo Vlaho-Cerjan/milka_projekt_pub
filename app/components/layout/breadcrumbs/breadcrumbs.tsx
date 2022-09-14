@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Breadcrumbs as BreadcrumbsMUI, Link as LinkMUI, Typography } from '@mui/material';
+import Link from '../../navigation/Link';
+import { CustomThemeContext } from '../../../store/customThemeContext';
 
 /**
  * Takes an URL String and removes query params and hash params
@@ -120,6 +121,7 @@ const NextBreadcrumbs = ({
   omitIndexList,
 }: BreadcrumbsProps) => {
   const router = useRouter();
+  const { theme } = React.useContext(CustomThemeContext);
   const [breadcrumbs, setBreadcrumbs] = useState<Array<Breadcrumb> | null>(
     null
   );
@@ -145,20 +147,24 @@ const NextBreadcrumbs = ({
   }
 
   return (
-    <BreadcrumbsMUI sx={{ p: (breadcrumbs[0].breadcrumb.length >= 1)?"16px 8px":0 }}  aria-label="breadcrumb">
+    <BreadcrumbsMUI sx={{ '& ol': { justifyContent: "center" }, p: (breadcrumbs[0].breadcrumb.length >= 1)?"16px 8px":0 }}  aria-label="breadcrumb">
         {!omitRootLabel && (
-          <LinkMUI underline="hover" color="inherit">
-            <Link href="/">
-              <a>
-                {convertBreadcrumb(
-                  rootLabel || 'Naslovnica',
-                  labelsToUppercase,
-                  replaceCharacterList,
-                  transformLabel
-                )}
-              </a>
-            </Link>
-          </LinkMUI>
+          <Link
+            underline="hover"
+            href="/"
+            sx={{
+              color: theme.palette.primary.main,
+              fontWeight: "500 !important",
+              textDecoration: "underline !important"
+            }}
+          >
+            {convertBreadcrumb(
+              rootLabel || 'Naslovnica',
+              labelsToUppercase,
+              replaceCharacterList,
+              transformLabel
+            )}
+          </Link>
         )}
         {breadcrumbs.length >= 1 &&
           breadcrumbs.map((breadcrumb, i) => {
@@ -171,7 +177,13 @@ const NextBreadcrumbs = ({
             }
             if( breadcrumbs.length - 1 === i ){
               return (
-                <Typography>
+                <Typography
+                  key={i+breadcrumb.breadcrumb}
+                  sx={{
+                    color: theme.palette.primary.main,
+                    fontWeight: "700 !important",
+                  }}
+                >
                   {
                     convertBreadcrumb(
                       breadcrumb.breadcrumb,
@@ -184,24 +196,25 @@ const NextBreadcrumbs = ({
               )
             }
             return (
-                <LinkMUI
-                    underline="hover"
-                    color="inherit"
-                    key={breadcrumb.href}
+                <Link
+                  underline="hover"
+                  key={breadcrumb.href}
+                  href={breadcrumb.href}
+                  sx={{
+                    color: theme.palette.primary.main,
+                    fontWeight: "500 !important",
+                    textDecoration: "underline !important"
+                  }}
                 >
-                    <Link href={breadcrumb.href}>
-                        <a>
-                            {
-                                convertBreadcrumb(
-                                    breadcrumb.breadcrumb,
-                                    labelsToUppercase,
-                                    replaceCharacterList,
-                                    transformLabel
-                                )
-                            }
-                        </a>
-                    </Link>
-              </LinkMUI>
+                    {
+                        convertBreadcrumb(
+                            breadcrumb.breadcrumb,
+                            labelsToUppercase,
+                            replaceCharacterList,
+                            transformLabel
+                        )
+                    }
+                </Link>
             );
           })}
     </BreadcrumbsMUI>

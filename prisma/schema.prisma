@@ -3,143 +3,172 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model admins {
   id          Int     @id @default(autoincrement())
-  first_name  String? @db.Char(255)
-  last_name   String? @db.Char(255)
-  title       String? @db.Char(255)
-  admin_title String? @db.Char(255)
-  admin_type  String? @db.Char(255)
-  create_date String? @db.Char(255)
-  update_date String? @db.Char(255)
-  delete_date String? @db.Char(255)
-  img_src     String?
-  alt         String?
+  first_name  String? @db.VarChar(255)
+  last_name   String? @db.VarChar(255)
+  title       String? @db.VarChar(255)
+  admin_title String? @db.VarChar(255)
+  admin_type  String? @db.VarChar(255)
+  create_date String? @db.VarChar(255)
+  update_date String? @db.VarChar(255)
+  delete_date String? @db.VarChar(255)
+  img_src     String? @db.MediumText
+  alt         String? @db.MediumText
 }
 
 model blog {
   id                Int     @id @default(autoincrement())
-  title             String  @db.Char(255)
-  content           String
-  img_src           String?
-  categories        Int[]
-  tags              Int[]
-  slug              String? @db.Char(255)
-  create_date       String? @db.Char(255)
-  update_date       String? @db.Char(255)
-  delete_date       String? @db.Char(255)
-  alt               String?
-  short_description String? @db.Char(500)
+  title             String  @db.VarChar(255)
+  content           String  @db.MediumText
+  img_src           String? @db.MediumText
+  categories        Int?
+  tags              Int?
+  slug              String? @db.VarChar(255)
+  create_date       String? @db.VarChar(255)
+  update_date       String? @db.VarChar(255)
+  delete_date       String? @db.VarChar(255)
+  alt               String? @db.MediumText
+  short_description String? @db.MediumText
 }
 
 model categories {
   id          Int     @id @default(autoincrement())
-  name        String  @db.Char(255)
-  description String?
-  create_date String? @db.Char(255)
-  update_date String? @db.Char(255)
-  delete_date String? @db.Char(255)
+  name        String  @db.VarChar(255)
+  description String? @db.MediumText
+  create_date String? @db.VarChar(255)
+  update_date String? @db.VarChar(255)
+  delete_date String? @db.VarChar(255)
+}
+
+model company_info {
+  id            Int     @id @default(autoincrement())
+  name          String  @db.VarChar(255)
+  title         String? @db.VarChar(255)
+  email         String? @db.VarChar(255)
+  url           String? @db.MediumText
+  working_hours String  @db.VarChar(255)
+  address       String? @db.MediumText
+  address_short String  @db.VarChar(255)
+  address_url   String? @db.MediumText
+  phone         String? @db.VarChar(255)
+  coords        String  @db.Text
 }
 
 model doctors {
   id              Int     @id @default(autoincrement())
-  first_name      String  @db.Char(255)
-  aditional_names String? @db.Char(255)
-  last_name       String? @db.Char(255)
-  title           String? @db.Char(255)
-  bio             String?
-  email           String? @db.Char(255)
-  phone           String? @db.Char(255)
-  create_date     String? @db.Char(255)
-  update_date     String? @db.Char(255)
-  delete_date     String? @db.Char(255)
-  img_src         String?
-  slug            String? @db.Char(255)
-  alt             String?
+  first_name      String  @db.VarChar(255)
+  aditional_names String? @db.VarChar(255)
+  last_name       String? @db.VarChar(255)
+  title           String? @db.VarChar(255)
+  bio             String? @db.MediumText
+  email           String? @db.VarChar(255)
+  phone           String? @db.VarChar(255)
+  create_date     String? @db.VarChar(255)
+  update_date     String? @db.VarChar(255)
+  delete_date     String? @db.VarChar(255)
+  img_src         String? @db.MediumText
+  slug            String? @db.VarChar(255)
+  alt             String? @db.MediumText
 }
 
 model employes {
   id              Int     @id @default(autoincrement())
-  first_name      String  @db.Char(255)
-  aditional_names String? @db.Char(255)
-  last_name       String? @db.Char(255)
-  title           String? @db.Char(255)
-  bio             String?
-  email           String? @db.Char(255)
-  phone           String? @db.Char(255)
-  employe_title   String? @db.Char(255)
-  create_date     String? @db.Char(255)
-  update_date     String? @db.Char(255)
-  delete_date     String? @db.Char(255)
-  img_src         String?
-  slug            String? @db.Char(255)
-  alt             String?
+  first_name      String  @db.VarChar(255)
+  aditional_names String? @db.VarChar(255)
+  last_name       String? @db.VarChar(255)
+  title           String? @db.VarChar(255)
+  bio             String? @db.MediumText
+  email           String? @db.VarChar(255)
+  phone           String? @db.VarChar(255)
+  employe_title   String? @db.VarChar(255)
+  create_date     String? @db.VarChar(255)
+  update_date     String? @db.VarChar(255)
+  delete_date     String? @db.VarChar(255)
+  img_src         String? @db.MediumText
+  slug            String? @db.VarChar(255)
+  alt             String? @db.MediumText
 }
 
 model faq {
   id          Int     @id @default(autoincrement())
-  title       String
-  content     String
-  create_date String? @db.Char(255)
-  update_date String? @db.Char(255)
-  delete_date String? @db.Char(255)
+  title       String  @db.MediumText
+  content     String  @db.MediumText
+  create_date String? @db.VarChar(255)
+  update_date String? @db.VarChar(255)
+  delete_date String? @db.VarChar(255)
 }
 
 model services {
-  id                  Int                   @id(map: "usluge_pkey") @default(autoincrement())
-  name                String                @db.Char(255)
-  description         String?
-  doctors_id          Int[]
-  create_date         String?               @db.Char(255)
-  update_date         String?               @db.Char(255)
-  delete_date         String?               @db.Char(255)
-  img_src             String?
-  slug                String?               @db.Char(255)
-  alt                 String?
-  services_price_list services_price_list[]
-  subservices         subservices[]
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  description String? @db.MediumText
+  doctors_id  String? @db.VarChar(255)
+  create_date String? @db.VarChar(255)
+  update_date String? @db.VarChar(255)
+  delete_date String? @db.VarChar(255)
+  img_src     String? @db.MediumText
+  slug        String? @db.VarChar(255)
+  alt         String? @db.MediumText
 }
 
 model services_price_list {
-  id            Int          @id(map: "cjenik_pkey") @default(autoincrement())
-  name          String       @db.Char(255)
+  id            Int     @id @default(autoincrement())
+  name          String  @db.VarChar(255)
   value         Float?
   discount      Float?
   usluga_id     Int?
   pod_usluga_id Int?
-  description   String?
-  value_range   String[]     @db.Char(255)
-  create_date   String?      @db.Char(255)
-  update_date   String?      @db.Char(255)
-  delete_date   String?      @db.Char(255)
-  subservices   subservices? @relation(fields: [pod_usluga_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pod_usluga")
-  services      services?    @relation(fields: [usluga_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usluga")
+  description   String? @db.MediumText
+  value_range   String? @db.VarChar(255)
+  create_date   String? @db.VarChar(255)
+  update_date   String? @db.VarChar(255)
+  delete_date   String? @db.VarChar(255)
 }
 
 model subservices {
-  id                  Int                   @id(map: "pod_usluge_pkey") @default(autoincrement())
-  name                String                @db.Char(255)
-  usluga_id           Int
-  description         String?
-  doctors_id          Int[]
-  create_date         String?               @db.Char(255)
-  update_date         String?               @db.Char(255)
-  delete_date         String?               @db.Char(255)
-  img_src             String?
-  slug                String?               @db.Char(255)
-  alt                 String?
-  services            services              @relation(fields: [usluga_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usluga")
-  services_price_list services_price_list[]
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  usluga_id   Int
+  description String? @db.MediumText
+  doctors_id  String? @db.VarChar(255)
+  create_date String? @db.VarChar(255)
+  update_date String? @db.VarChar(255)
+  delete_date String? @db.VarChar(255)
+  img_src     String? @db.MediumText
+  slug        String? @db.VarChar(255)
+  alt         String? @db.MediumText
 }
 
 model tags {
-  id          Int     @id @default(autoincrement())
-  name        String  @db.Char(255)
-  create_date String? @db.Char(255)
-  update_date String? @db.Char(255)
-  delete_date String? @db.Char(255)
+  id          Int     @id
+  NAME        String  @db.VarChar(255)
+  create_date String? @db.VarChar(255)
+  update_date String? @db.VarChar(255)
+  delete_date String? @db.VarChar(255)
+}
+
+model page_info {
+  id               Int     @id @default(autoincrement())
+  page_title       String  @db.Text
+  page_description String  @db.Text
+  page_slug        String  @db.Text
+  image            String  @db.Text
+  openGraphType    String  @db.Text
+  createdAt        String  @default(dbgenerated("(current_timestamp())")) @db.VarChar(255)
+  updatedAt        String? @db.VarChar(255)
+}
+
+model socials {
+  id         Int     @id @default(autoincrement())
+  name       String  @db.VarChar(255)
+  link       String  @db.Text
+  type       String  @db.Text
+  created_at String  @default(dbgenerated("(current_timestamp())")) @db.VarChar(255)
+  updated_at String? @db.VarChar(255)
+  deleted_at String? @db.VarChar(255)
 }

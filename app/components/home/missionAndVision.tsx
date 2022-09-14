@@ -4,13 +4,14 @@ import Title from '../common/title/title';
 import Image from 'next/image';
 import { CustomThemeContext } from '../../store/customThemeContext';
 import useWindowSize from '../../utility/windowSize';
+import { StyledContainer } from '../common/container/styledContainer';
 
 const MissionAndVision = () => {
     const { theme } = useContext(CustomThemeContext);
     const { width } = useWindowSize();
 
     return (
-        <Container sx={{ p: "64px 0 16px" }}>
+        <StyledContainer>
             <Title title="Misija I Vizija" />
             <Box>
                 {(width < theme.breakpoints.values.md)?
@@ -173,7 +174,7 @@ const MissionAndVision = () => {
                 </Box>
             }
             </Box>
-        </Container>
+        </StyledContainer>
     )
 }
 

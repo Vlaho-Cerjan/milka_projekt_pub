@@ -12,12 +12,19 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import ScrollProps from "../../../interfaces/ScrollProps";
 import { useRouter } from "next/router";
 import React, { useRef, useEffect, useState } from "react";
+import { CustomThemeContext } from "../../../store/customThemeContext";
+import Footer from '../footer/footer';
 
 interface DesktopLayoutProps {
     children: React.ReactNode,
-    isDark: boolean,
-    setTheme: () => void,
+    data: any
 }
+
+const TopItem = styled(Box)(() => ({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+}))
 
 const StyledLink = styled(Link)(({ theme }) => ({
         padding: "2% 3%",
@@ -40,14 +47,9 @@ const HideOnScroll = (props: ScrollProps) => {
     );
 }
 
-const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
-    const TopItem = styled(Box)(() => ({
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-    }))
-
+const DesktopLayout = ({children, data}: DesktopLayoutProps) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { isDark, setTheme } = React.useContext(CustomThemeContext);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -70,7 +72,7 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
     }, [topBarRef.current?.clientHeight, headerRef.current?.clientHeight])
 
     return (
-        <>
+        <Box>
             <Paper
                 elevation={10}
                 square
@@ -79,55 +81,60 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                 }}
                 ref={topBarRef}
             >
-                <Grid
-                    sx={{
-                        mt: [0, 0, 0, "-16px"],
-                        borderRadius: 0,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        fontWeight: 500,
-                    }}
-                    container
-                    spacing={2}
-                >
-                    <Grid item xs={6} lg={3}>
-                        <TopItem>
-                            <Link target="_blank" href="https://goo.gl/maps/UPeifUhNfmjEVP7PA" sx={{ display: "flex" }}>
-                                <LocationCityIcon sx={{ mr: "8px" }}/>
-                                Crna Rika 7a, 20340 Ploče
-                            </Link>
-                        </TopItem>
-                    </Grid>
-                    <Grid item xs={6} lg={4}>
-                        <TopItem>
-                            <Link  target="_blank" href="mailto:recepcija@varela.hr" sx={{ display: "flex" }}>
-                                <EmailIcon sx={{ mr: "8px" }}/>
-                                recepcija@varela.hr
-                            </Link>
-                        </TopItem>
-                    </Grid>
-                    <Grid item xs={6} lg={4}>
-                        <TopItem>
-                            <Link  target="_blank" href="tel:+385916138766" sx={{ display: "flex" }}>
-                                <LocalPhoneIcon sx={{ mr: "8px" }}/>
-                                +385 (0)91 613 8766
-                            </Link>
-                        </TopItem>
-                    </Grid>
-                    <Grid item xs={6} lg={1}>
-                        <TopItem>
-                            <Box sx={{ pl: 0, lineHeight: 0, display: "flex" }}>
-                                <Link sx={{ lineHeight: 0 }} target="_blank" href="https://www.instagram.com/ambulanta_varela/">
-                                    <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
+
+                {typeof data !== "undefined" && data ?
+                    <Grid
+                        sx={{
+                            mt: [0, 0, 0, "-16px"],
+                            borderRadius: 0,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontWeight: 500,
+                        }}
+                        container
+                        spacing={2}
+                    >
+                        <Grid item xs={6} lg={3}>
+                            <TopItem>
+                                <Link target="_blank" href={data.company_info.address_url} sx={{ display: "flex" }}>
+                                    <LocationCityIcon sx={{ mr: "8px" }}/>
+                                    { data.company_info.address_short }
                                 </Link>
-                                <Link sx={{ lineHeight: 0 }} target="_blank" href="https://www.facebook.com/ambulanta.varela">
-                                    <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
+                            </TopItem>
+                        </Grid>
+                        <Grid item xs={6} lg={4}>
+                            <TopItem>
+                                <Link href={"mailto:"+data.company_info.email} sx={{ display: "flex" }}>
+                                    <EmailIcon sx={{ mr: "8px" }}/>
+                                    { data.company_info.email }
                                 </Link>
-                            </Box>
-                            <MaterialUISwitch onClick={setTheme} sx={{ m: 1 }} checked={isDark} />
-                        </TopItem>
+                            </TopItem>
+                        </Grid>
+                        <Grid item xs={6} lg={4}>
+                            <TopItem>
+                                <Link href={"tel:"+(data.company_info.phone).replace(/[\(\)0 ]/g, '')} sx={{ display: "flex" }}>
+                                    <LocalPhoneIcon sx={{ mr: "8px" }}/>
+                                    { data.company_info.phone }
+                                </Link>
+                            </TopItem>
+                        </Grid>
+                        <Grid item xs={6} lg={1}>
+                            <TopItem>
+                                <Box sx={{ pl: 0, lineHeight: 0, display: "flex" }}>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").link}>
+                                        <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
+                                    </Link>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").link}>
+                                        <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
+                                    </Link>
+                                </Box>
+                                <MaterialUISwitch onClick={() => setTheme()} sx={{ m: 1 }} checked={isDark} />
+                            </TopItem>
+                        </Grid>
                     </Grid>
-                </Grid>
+                :
+                    null
+                }
             </Paper>
             <HideOnScroll threshold={threshold}>
                 <AppBar ref={headerRef} position="sticky">
@@ -227,6 +234,7 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                     </Paper>
                 </AppBar>
             </HideOnScroll>
+            {router.pathname !== "/" ?
             <Paper
                 square
             >
@@ -238,6 +246,9 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
                     }}
                 />
             </Paper>
+            :
+                null
+            }
             <Paper
                 elevation={2}
                 square
@@ -247,7 +258,8 @@ const DesktopLayout = ({children, isDark, setTheme}: DesktopLayoutProps) => {
             >
                 {children}
             </Paper>
-        </>
+            <Footer data={data} />
+        </Box>
     )
 }
 

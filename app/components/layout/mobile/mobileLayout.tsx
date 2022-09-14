@@ -14,17 +14,20 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import NextBreadcrumbs from "../breadcrumbs/breadcrumbs";
 import { useRouter } from 'next/router';
 import ScrollProps from "../../../interfaces/ScrollProps";
+import { CustomThemeContext } from '../../../store/customThemeContext';
+import Footer from '../footer/footer';
 
 interface MobileLayoutProps {
     children: React.ReactNode,
-    isDark: boolean,
-    setTheme: () => void,
+    data: any
 }
 
-const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
+const MobileLayout = ({children, data}: MobileLayoutProps) => {
     const [state, setState] = React.useState({
         drawer: false
     });
+
+    const { isDark, setTheme } = React.useContext(CustomThemeContext);
 
     const HideOnScroll = (props: ScrollProps) => {
         const { children } = props;
@@ -88,16 +91,22 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                                     <MenuIcon fontSize="large" />
                                 </Button>
                             </Grid>
-                            <Grid item xs={4} md={8} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <Link sx={{ lineHeight: 0 }} target="_blank" href="https://www.instagram.com/ambulanta_varela/">
-                                    <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
-                                </Link>
-                                <Link sx={{ lineHeight: 0 }} target="_blank" href="https://www.facebook.com/ambulanta.varela">
-                                    <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
-                                </Link>
-                            </Grid>
+                            {typeof data !== 'undefined' && data !== null ?
+                                <Grid item xs={4} md={8} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").link}>
+                                        <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
+                                    </Link>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").link}>
+                                        <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
+                                    </Link>
+                                </Grid>
+                            :
+                                <Grid item xs={4} md={8} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <></>
+                                </Grid>
+                            }
                             <Grid item xs={4} md={2} sx={{ textAlign: "end" }}>
-                                <MaterialUISwitch onClick={setTheme} sx={{ m: 1 }} checked={isDark} />
+                                <MaterialUISwitch onClick={() => setTheme()} sx={{ m: 1 }} checked={isDark} />
                             </Grid>
                         </Grid>
                     </Paper>
@@ -133,6 +142,7 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                         padding: "8px",
                     }}
                 >
+                    {typeof data !== 'undefined' && data !== null ?
                     <Grid
                         sx={{
                             mt: [0, 0, 0, "-16px"],
@@ -149,25 +159,25 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                     >
                         <Grid item xs={12}>
                             <TopItem>
-                                <Link target="_blank" href="https://goo.gl/maps/UPeifUhNfmjEVP7PA" sx={{ display: "flex" }}>
+                                <Link target="_blank" href={data.company_info.address_url} sx={{ display: "flex" }}>
                                     <LocationCityIcon sx={{ mr: "8px" }}/>
-                                    Crna Rika 7a, 20340 Ploče
+                                    { data.company_info.address_short }
                                 </Link>
                             </TopItem>
                         </Grid>
                         <Grid item xs={12}>
                             <TopItem>
-                                <Link target="_blank" href="mailto:recepcija@varela.hr" sx={{ display: "flex" }}>
+                                <Link href={"mailto:"+data.company_info.email} sx={{ display: "flex" }}>
                                     <EmailIcon sx={{ mr: "8px" }}/>
-                                    recepcija@varela.hr
+                                    { data.company_info.email }
                                 </Link>
                             </TopItem>
                         </Grid>
                         <Grid item xs={12}>
                             <TopItem>
-                                <Link  target="_blank" href="tel:+385916138766" sx={{ display: "flex" }}>
+                                <Link href={"tel:"+(data.company_info.phone).replace(/[\(\)0 ]/g, '')} sx={{ display: "flex" }}>
                                     <LocalPhoneIcon sx={{ mr: "8px" }}/>
-                                    +385 (0)91 613 8766
+                                    { data.company_info.phone }
                                 </Link>
                             </TopItem>
                         </Grid>
@@ -178,14 +188,14 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                                 alignItems: "center",
                             }}>
                                 <Container sx={{ pl: 0, lineHeight: 0 }}>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href="https://www.instagram.com/ambulanta_varela/">
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").link}>
                                         <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
                                     </Link>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href="https://www.facebook.com/ambulanta.varela">
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").link}>
                                         <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
                                     </Link>
                                 </Container>
-                                <MaterialUISwitch onClick={setTheme} sx={{ m: "0 1rem 0 1rem" }} checked={isDark} />
+                                <MaterialUISwitch onClick={() => setTheme()} sx={{ m: "0 1rem 0 1rem" }} checked={isDark} />
                             </TopItem>
                         </Grid>
                         <Grid
@@ -208,6 +218,9 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
                             </Button>
                         </Grid>
                     </Grid>
+                    :
+                        null
+                    }
                 </Paper>
                 <Paper
                     elevation={2}
@@ -309,6 +322,7 @@ const MobileLayout = ({children, isDark, setTheme}: MobileLayoutProps) => {
             >
                 {children}
             </Paper>
+            <Footer data={data} />
         </>
     )
 }

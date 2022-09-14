@@ -23,58 +23,43 @@ const settings = {
     },
 };
 
-interface SocialTagsProps {
-    url: string,
-    title: string,
-    description: string,
-    image?: string,
-    openGraphType?: string,
-    createdAt?: string,
-    updatedAt?: string
-}
-
-const socialTags = ({
-    url,
-    title,
-    description,
-    image,
-    openGraphType,
-    createdAt,
-    updatedAt,
-}: SocialTagsProps) => {
+const socialTags = (page_info: any) => {
     const metaTags = [
-    { name: "og:title", content: title },
-    { name: "og:type", content: openGraphType },
-    { name: "og:url", content: url },
-    { name: "og:image", content: image || settings.meta.social.graphic },
-    { name: "og:description", content: description },
+    { name: "og:title", content: page_info.page_title },
+    { name: "og:type", content: page_info.openGraphType },
+    { name: "og:url", content: page_info.page_slug },
+    { name: "og:image", content: page_info.image || settings.meta.social.graphic },
+    { name: "og:description", content: page_info.page_description },
     {
         name: "og:site_name",
         content: settings && settings.meta && settings.meta.title,
     },
     {
         name: "og:published_time",
-        content: createdAt || new Date().toISOString(),
+        content: page_info.createdAt || new Date().toISOString(),
     },
     {
         name: "og:modified_time",
-        content: updatedAt || new Date().toISOString(),
+        content: page_info.updatedAt || new Date().toISOString(),
     },
     ];
     return metaTags;
 };
 
-const SEO = (props: { url: string; title: string; description: string; image?: string; schemaType?: string; openGraphType?: string; createdAt?: string; updatedAt?: string; }) => {
-    const { url, title, description, image, schemaType } = props;
+const SEO = ({page_info}: {page_info: any}) => {
+    if(typeof page_info === "undefined") {
+        return null;
+    }
+    const { page_slug, page_title, page_description, image, openGraphType } = page_info;
 
     return (
         <Head>
-            <title>{title} | App</title>
-            <meta name="description" content={description} />
-            <meta itemProp="name" content={title} />
-            <meta itemProp="description" content={description} />
+            <title>{page_title} | App</title>
+            <meta name="description" content={page_description} />
+            <meta itemProp="name" content={page_title} />
+            <meta itemProp="description" content={page_description} />
             <meta itemProp="image" content={image || settings.meta.social.graphic} />
-            {socialTags(props).map(({ name, content }) => {
+            {socialTags(page_info).map(({ name, content }) => {
                 return <meta key={name} name={name} content={content} />;
             })}
             <script
@@ -82,10 +67,10 @@ const SEO = (props: { url: string; title: string; description: string; image?: s
                 dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                     "@context": "http://schema.org",
-                    "@type": schemaType,
-                    name: title,
-                    about: description,
-                    url: url,
+                    "@type": openGraphType,
+                    name: page_title,
+                    about: page_description,
+                    url: page_slug,
                 }),
                 }}
             />

@@ -5,6 +5,7 @@ import { CustomThemeContext } from '../../store/customThemeContext';
 import useWindowSize from '../../utility/windowSize';
 import Image from 'next/image';
 import SendIcon from '@mui/icons-material/Send';
+import { StyledContainer } from '../common/container/styledContainer';
 
 const Greeting = () => {
     const { width } = useWindowSize();
@@ -60,7 +61,7 @@ const Greeting = () => {
                         lineHeight={1}
                         fontSize={width<789?"1.5rem":"2.5rem"}
                         fontWeight={600}
-                        fontFamily="'El Messiri', sans-serif"
+                        fontFamily="'Oswald', sans-serif"
                         color={isDark?"black":"white"}
                         component="h1"
                         >
@@ -84,7 +85,7 @@ const Greeting = () => {
                         <Link href="/kontakt">
                             <a>
                             <Box sx={{
-                                fontFamily: "'El Messiri', sans-serif",
+                                fontFamily: "'Oswald', sans-serif",
                                 fontWeight: "700",
                                 p: "5px 15px",
                                 display: "flex",
@@ -104,7 +105,7 @@ const Greeting = () => {
                 </>)
                 :
                 (<>
-                <Container sx={{ p: "64px 9%", textAlign: "center"}}>
+                <StyledContainer sx={{ p: "64px 9%", textAlign: "center"}}>
                     <Typography
                     sx={{
                         mb: "16px",
@@ -114,7 +115,7 @@ const Greeting = () => {
                     lineHeight={1}
                     fontSize={width<420?"2rem":"2.5rem"}
                     fontWeight={600}
-                    fontFamily="'El Messiri', sans-serif"
+                    fontFamily="'Oswald', sans-serif"
                     color={isDark?"black":"white"}
                     >
                     Varela Dermatologija
@@ -143,7 +144,7 @@ const Greeting = () => {
                         </a>
                     </Link>
                     </Button>
-                </Container>
+                </StyledContainer>
             </>)
         }
         </Box>

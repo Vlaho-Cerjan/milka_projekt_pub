@@ -4,6 +4,7 @@ import Title from '../common/title/title';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CustomThemeContext } from '../../store/customThemeContext';
+import { StyledContainer } from '../common/container/styledContainer';
 
 interface OurTeamProps {
     employes: {
@@ -103,7 +104,7 @@ const OurTeam = ({employes}: OurTeamProps) => {
                         {/*<CardActions sx={{ justifyContent: "center" }}>
                             <Button
                                 sx={{
-                                    fontFamily: "'El Messiri', sans-serif",
+                                    fontFamily: "'Oswald', sans-serif",
                                     fontWeight: "700 !important",
                                     fontSize: "1.1rem",
                                     letterSpacing: "0.5px",
@@ -123,17 +124,17 @@ const OurTeam = ({employes}: OurTeamProps) => {
     )
 
     return(
-        <Container sx={{ p: "64px 0 16px" }}>
+        <StyledContainer>
             <Title title="Naš Tim" />
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Typography sx={{ maxWidth: { sx: "100%", md: "60%" } }} textAlign="center" pb="16px">
+                <Typography sx={{ maxWidth: { sm: "100%", md: "60%" } }} textAlign="center" pb="16px">
                     U Varela dermatološkoj klinici imamo dermatologinju koja je inovator u kozmetičkom i dermatološkom području, kao i vrsnoga kirurga i gostujuće doktore.
                 </Typography>
             </Box>
             <Grid container spacing={2}>
                 {dataEmployes}
             </Grid>
-        </Container>
+        </StyledContainer>
     )
 }
 

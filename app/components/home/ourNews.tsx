@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import limit from '../../utility/limit';
+import { StyledContainer } from '../common/container/styledContainer';
 
 const StyledCard = styled(Card)(() => ({
     height: "100%",
@@ -90,7 +91,7 @@ const OurNews = ({news}: NewsProps) => {
     )
 
     return (
-        <Container sx={{ p: "64px 0 16px" }}>
+        <StyledContainer>
             <Typography sx={{ pb: "32px" }} color="primary.main" textAlign="center" variant="h3" component="h2">
                 Novosti
             </Typography>
@@ -111,7 +112,7 @@ const OurNews = ({news}: NewsProps) => {
                     </Link>
                 </Button>
             </Box>
-        </Container>
+        </StyledContainer>
     )
 }
 

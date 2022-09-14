@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
         <Head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" /> 
+          <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Noto+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" /> 
           <link
             rel="icon"
             sizes="192x192"
@@ -71,31 +71,32 @@ MyDocument.getInitialProps = async (ctx) => {
 
   /* eslint-disable */
   ctx.renderPage = () =>
-    originalRenderPage({
-      enhanceApp: (App: any) => (props) =>
-        <App emotionCache={cache} {...props} />,
-    });
+      originalRenderPage({
+      enhanceApp: (App: any) => (props: any) =>
+          <App emotionCache={cache} {...props} />,
+      });
   /* eslint-enable */
 
   const initialProps = await Document.getInitialProps(ctx);
   // This is important. It prevents emotion to render invalid HTML.
   // See https://github.com/mui-org/material-ui/issues/26561#issuecomment-855286153
   const emotionStyles = extractCriticalToChunks(initialProps.html);
-  const emotionStyleTags = emotionStyles.styles.map((style) => (
-    <style
+  const emotionStyleTags = emotionStyles.styles.map((style: { key: React.Key | null | undefined; ids: any[]; css: any; }) => (
+      <style
+      type='text/css'
       data-emotion={`${style.key} ${style.ids.join(' ')}`}
       key={style.key}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}
-    />
+      />
   ));
 
   return {
-    ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
-    styles: [
+      ...initialProps,
+      // Styles fragment is rendered after the app and page rendering finish.
+      styles: [
       ...React.Children.toArray(initialProps.styles),
       ...emotionStyleTags,
-    ],
+      ],
   };
 };

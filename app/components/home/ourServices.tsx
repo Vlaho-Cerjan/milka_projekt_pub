@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Title from '../common/title/title';
+import { StyledContainer } from '../common/container/styledContainer';
 
 const StyledCard = styled(Card)(() => ({
     height: "100%",
@@ -81,7 +82,7 @@ const OurServices = ({services}: ServicesProps) => {
                         <CardActions sx={{ justifyContent: "center" }}>
                             <Button
                                 sx={{
-                                    fontFamily: "'El Messiri', sans-serif",
+                                    fontFamily: "'Oswald', sans-serif",
                                     fontWeight: "700 !important",
                                     fontSize: "1.1rem",
                                     letterSpacing: "0.5px",
@@ -100,12 +101,12 @@ const OurServices = ({services}: ServicesProps) => {
     )
 
     return (
-        <Container sx={{ p: "64px 0 16px" }}>
+        <StyledContainer>
             <Title title="Naše Usluge" />
             <Grid container spacing={2}>
                 {dataServices}
             </Grid>
-        </Container>
+        </StyledContainer>
     )
 }
 

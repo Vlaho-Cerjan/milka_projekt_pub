@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@emotion/react'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import lightThemeOptions from '../styles/theme/lightThemeOptions';
 import darkThemeOptions from '../styles/theme/darkThemeOptions';
 import { createTheme, Theme } from '@mui/material';
@@ -21,7 +21,7 @@ export const CustomThemeContext = React.createContext(
     {
         currentTheme: 'light',
         theme: light,
-        setTheme: () => {},
+        setTheme: (theme?: string) => {},
         isDark: false,
     },
 )
@@ -30,35 +30,42 @@ const CustomThemeProvider = (props: { children: any }) => {
     // eslint-disable-next-line react/prop-types
     const { children } = props
 
-    // Read current theme from localStorage or maybe from an api
-    const currentTheme = (typeof window !== "undefined")?localStorage.getItem('mode') || 'light': 'light';
+    const [mode, setMode] = useState<string>('light');
 
-    // State to hold the selected theme name
-    const [themeName, _setThemeName] = useState(currentTheme)
+    useEffect(() => {
+        const storageMode = localStorage.getItem('mode');
+        if(storageMode) setMode(storageMode)
+    }, [])
 
     // Retrieve the theme object by theme name
-    const theme = getTheme(themeName);
+    const theme = getTheme(mode);
 
-    const isDark = currentTheme === "dark";
+    const isDark = mode === "dark";
 
     // Wrap _setThemeName to store new theme names in localStorage
-    const setThemeName = () => {
+    const setThemeName = (theme?: string) => {
         let tempTheme = "";
-        if(currentTheme !== "light"){
-            tempTheme = "light"
+        if(mode !== "light"){
+            tempTheme = "light";
         }else{
-            tempTheme = "dark"
+            tempTheme = "dark";
         }
-        if(typeof window !== "undefined") localStorage.setItem('mode', tempTheme)
-        _setThemeName(tempTheme)
+        if(theme) tempTheme = theme;
+        localStorage.setItem('mode', tempTheme);
+        setMode(tempTheme)
     }
 
     const contextValue = {
-        currentTheme: themeName,
+        currentTheme: mode,
         theme: theme,
         setTheme: setThemeName,
         isDark: isDark,
     }
+
+    useEffect(() => {
+        if(mode === "dark" && !document.body.classList.contains("dark")) document.body.classList.add("dark");
+        else if(document.body.classList.contains("dark")) document.body.classList.remove("dark");
+    }, [mode])
 
     return (
         <CustomThemeContext.Provider value={contextValue}>
