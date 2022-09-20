@@ -68,6 +68,15 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
     const imageSrc = isDark ? "/images/logo/logo_transparent_dark.png" : "/images/logo/logo_transparent.png";
 
     const headerRef=  useRef<HTMLDivElement>(null);
+    const footerRef = useRef<HTMLDivElement>(null);
+    const breadcrumbsRef = useRef<HTMLDivElement>(null);
+
+    const [minContentHeight, setMinContentHeight] = React.useState<number>(0);
+
+    React.useEffect(() => {
+        if(headerRef && footerRef && breadcrumbsRef && headerRef.current && footerRef.current && breadcrumbsRef.current) setMinContentHeight(headerRef.current.clientHeight+footerRef.current.clientHeight+breadcrumbsRef.current.clientHeight);
+    }, [headerRef.current?.clientHeight, footerRef.current?.clientHeight, breadcrumbsRef.current?.clientHeight])
+
 
     return (
         <>
@@ -93,10 +102,10 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                             </Grid>
                             {typeof data !== 'undefined' && data !== null ?
                                 <Grid item xs={4} md={8} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").link}>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").href}>
                                         <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
                                     </Link>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").link}>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").href}>
                                         <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
                                     </Link>
                                 </Grid>
@@ -115,11 +124,15 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
             <Paper
                 elevation={2}
                 square
+                ref={breadcrumbsRef}
                 sx={{ '& .MuiBreadcrumbs-ol': { justifyContent: "center" } }}
             >
                 <NextBreadcrumbs
                     omitRootLabel={router.pathname === "/"}
                     replaceCharacterList={[{ from: '.', to: ' ' }]}
+                    transformLabel={(title: string) => {
+                        return title.charAt(0).toUpperCase() + title.slice(1).replace(/\-[a-z]/g, match => match.replace("-", " ").toUpperCase())
+                    }}
                 />
             </Paper>
             <SwipeableDrawer
@@ -188,10 +201,10 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                                 alignItems: "center",
                             }}>
                                 <Container sx={{ pl: 0, lineHeight: 0 }}>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").link}>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").href}>
                                         <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
                                     </Link>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").link}>
+                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").href}>
                                         <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
                                     </Link>
                                 </Container>
@@ -317,12 +330,14 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                 elevation={2}
                 square
                 sx={{
-                    minHeight: 'calc(100vh - '+(Math.ceil((typeof headerRef.current?.scrollHeight !== "undefined"?headerRef.current.scrollHeight:0))+1)+'px)'
+                    minHeight: 'calc(100vh - '+(minContentHeight+1)+'px)'
                 }}
             >
                 {children}
             </Paper>
-            <Footer data={data} />
+            <Box ref={footerRef}>
+                <Footer data={data} />
+            </Box>
         </>
     )
 }

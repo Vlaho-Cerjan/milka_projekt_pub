@@ -14,6 +14,9 @@ import CustomThemeProvider from '../app/store/customThemeContext';
 import { LanguageProvider } from '../app/store/languageContext';
 import { ModeProvider } from '../app/store/modeContext';
 import Layout from '../app/components/layout/layout';
+import { SnackbarProvider } from 'notistack';
+import { Router } from 'next/router';
+import ProgressBar from '@badrap/bar-of-progress';
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -21,12 +24,28 @@ interface MyAppProps extends AppProps {
 
 const clientSideEmotionCache = createEmotionCache();
 
+const progress = new ProgressBar(
+  {
+    size: 4,
+  }
+)
+
 const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  Router.events.on("routeChangeStart", () => {
+    progress.start();
+  });
+  Router.events.on("routeChangeComplete", () => {
+    progress.finish();
+  });
+  Router.events.on("routeChangeError", () => {
+    progress.finish();
+  });
   return (
     <ModeProvider>
       <LanguageProvider>
+        <SnackbarProvider maxSnack={5} anchorOrigin={{horizontal: "right", vertical: "top"}} variant="success" >
           <CacheProvider value={emotionCache}>
             <CustomThemeProvider>
               <Layout>
@@ -37,6 +56,7 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
               </Layout>
             </CustomThemeProvider>
           </CacheProvider>
+        </SnackbarProvider>
       </LanguageProvider>
     </ModeProvider>
   );

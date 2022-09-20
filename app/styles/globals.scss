@@ -45,6 +45,16 @@ body.dark {
   .leaflet-container {
       background: #303030;
   }
+
+  .bar-of-progress{
+    color: #90caf9 !important;
+    background-color: #90caf9 !important;
+  }
+}
+
+.bar-of-progress{
+  color: #0f7553 !important;
+  background-color: #0f7553 !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,3 +66,4 @@ body.dark {
       background: #303030;
   }
 }
+

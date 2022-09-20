@@ -4,7 +4,8 @@ import prisma from '../../app/utility/prisma'
 
 type Data = {
   socials: any,
-  company_info: any
+  company_info: any,
+  navigation: any
 }
 
 export default async function handler(
@@ -13,6 +14,11 @@ export default async function handler(
 ) {
     const socials = await prisma.socials.findMany();
     const company_info = await prisma.company_info.findFirst();
+    const navigation = await prisma.navigation.findMany({
+        orderBy: {
+            nav_order: 'asc'
+        }
+    });
 
-    res.status(200).json({ socials, company_info })
+    res.status(200).json({ socials, company_info, navigation })
 }

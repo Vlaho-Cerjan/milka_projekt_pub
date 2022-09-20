@@ -5,6 +5,8 @@ import useWindowSize from '../../utility/windowSize';
 import DesktopLayout from "./desktop/desktopLayout";
 import MobileLayout from "./mobile/mobileLayout";
 import React from "react";
+import ProgressBar from '@badrap/bar-of-progress';
+import { Router } from "next/router";
 
 interface Props {
     children: ReactNode
@@ -12,9 +14,8 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
     const windowSize = useWindowSize();
-
-    const [data, setData] = React.useState(null)
-
+    const { theme } = React.useContext(CustomThemeContext);
+    const [data, setData] = React.useState(null);
     React.useEffect(() => {
         fetch('/api/layout-data')
         .then((res) => res.json())

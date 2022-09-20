@@ -98,6 +98,7 @@ model faq {
   id          Int     @id @default(autoincrement())
   title       String  @db.MediumText
   content     String  @db.MediumText
+  faq_order   Int
   create_date String? @db.VarChar(255)
   update_date String? @db.VarChar(255)
   delete_date String? @db.VarChar(255)
@@ -116,18 +117,20 @@ model services {
   alt         String? @db.MediumText
 }
 
-model services_price_list {
-  id            Int     @id @default(autoincrement())
-  name          String  @db.VarChar(255)
-  value         Float?
-  discount      Float?
-  usluga_id     Int?
-  pod_usluga_id Int?
-  description   String? @db.MediumText
-  value_range   String? @db.VarChar(255)
-  create_date   String? @db.VarChar(255)
-  update_date   String? @db.VarChar(255)
-  delete_date   String? @db.VarChar(255)
+model services_list {
+  id             Int     @id @default(autoincrement())
+  name           String  @db.VarChar(255)
+  value          Float?
+  discount       Float?
+  usluga_id      Int?
+  pod_usluga_id  Int?
+  description    String? @db.MediumText
+  value_range    String? @db.VarChar(255)
+  services_order Int?
+  highlighted    Int     @default(0) @db.TinyInt
+  create_date    String? @db.VarChar(255)
+  update_date    String? @db.VarChar(255)
+  delete_date    String? @db.VarChar(255)
 }
 
 model subservices {
@@ -154,21 +157,48 @@ model tags {
 
 model page_info {
   id               Int     @id @default(autoincrement())
+  title            String? @db.VarChar(255)
   page_title       String  @db.Text
   page_description String  @db.Text
   page_slug        String  @db.Text
   image            String  @db.Text
   openGraphType    String  @db.Text
-  createdAt        String  @default(dbgenerated("(current_timestamp())")) @db.VarChar(255)
+  createdAt        String  @db.VarChar(255)
   updatedAt        String? @db.VarChar(255)
 }
 
 model socials {
   id         Int     @id @default(autoincrement())
   name       String  @db.VarChar(255)
-  link       String  @db.Text
+  href       String  @db.Text
   type       String  @db.Text
   created_at String  @default(dbgenerated("(current_timestamp())")) @db.VarChar(255)
   updated_at String? @db.VarChar(255)
   deleted_at String? @db.VarChar(255)
+}
+
+model navigation {
+  id         Int     @id @default(autoincrement())
+  name       String  @db.VarChar(255)
+  href       String  @db.VarChar(255)
+  type       String  @db.VarChar(255)
+  parent_id  Int?
+  nav_order  Int
+  created_at String? @db.VarChar(255)
+  updated_at String? @db.VarChar(255)
+  deleted_at String? @db.VarChar(255)
+  active     Int     @default(1) @db.TinyInt
+}
+
+model services_price_list {
+  id              Int     @id @default(autoincrement())
+  service_list_id Int
+  title           String  @db.VarChar(255)
+  description     String? @db.Text
+  value           Float
+  discount        Float?
+  created_at      String  @db.VarChar(255)
+  updated_at      String? @db.VarChar(255)
+  deleted_at      String? @db.VarChar(255)
+  active          Int     @default(1) @db.TinyInt
 }
