@@ -272,7 +272,7 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                         <Grid item xs={12} sx={{ width: "100%" }}>
                             <Box textAlign="center" sx={{ display: "flex", flexDirection: "column", fontSize: "1.5rem", fontWeight: 600, width: "100%"  }}>
                                 <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/">Naslovnica</Link>
-                                <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/novosti">Novosti</Link>
+                                
                                 <Button
                                     id="usluge-i-cjenik"
                                     aria-controls={open ? 'basic-menu' : undefined}
