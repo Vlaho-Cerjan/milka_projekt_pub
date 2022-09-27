@@ -307,16 +307,16 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                                     }}
                                 >
                                     <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link  sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/dermatologija">Dermatologija</Link>
+                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/dermatologija">Dermatologija</Link>
                                     </MenuItem>
                                     <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/kozmetologija">Kozmetologija</Link>
+                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/kozmetologija">Kozmetologija</Link>
                                     </MenuItem>
                                     <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/kirurgija">Kirurgija</Link>
+                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/kirurgija">Kirurgija</Link>
                                     </MenuItem>
                                     <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/gostojuci-doktori">Gostujući doktori</Link>
+                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/gostojuci-doktori">Gostujući doktori</Link>
                                     </MenuItem>
                                 </Menu>
                                 <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/faq">FAQ</Link>
