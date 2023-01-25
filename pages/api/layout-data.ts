@@ -12,13 +12,20 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-    const socials = await prisma.socials.findMany();
-    const company_info = await prisma.company_info.findFirst();
-    const navigation = await prisma.navigation.findMany({
-        orderBy: {
-            nav_order: 'asc'
-        }
-    });
+  const socials = await prisma.socials.findMany({
+    where: {
+      active: 1
+    }
+  });
+  const company_info = await prisma.company_info.findFirst();
+  const navigation = await prisma.navigation.findMany({
+    where: {
+      active: 1
+    },
+    orderBy: {
+      nav_order: 'asc'
+    }
+  });
 
-    res.status(200).json({ socials, company_info, navigation })
+  res.status(200).json({ socials, company_info, navigation })
 }

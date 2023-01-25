@@ -16,16 +16,29 @@ import { useRouter } from 'next/router';
 import ScrollProps from "../../../interfaces/ScrollProps";
 import { CustomThemeContext } from '../../../store/customThemeContext';
 import Footer from '../footer/footer';
+import { Twitter, YouTube, LinkedIn } from '@mui/icons-material';
 
 interface MobileLayoutProps {
     children: React.ReactNode,
     data: any
 }
 
-const MobileLayout = ({children, data}: MobileLayoutProps) => {
+const MobileLayout = ({ children, data }: MobileLayoutProps) => {
     const [state, setState] = React.useState({
         drawer: false
     });
+
+    const [anchorItemEl, setAnchorItemEl] = React.useState<any | null>(null);
+    const handleItemClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setAnchorItemEl((prevState: any) => ({
+            ...prevState,
+            [event.currentTarget.id]: event.currentTarget
+        }));
+    }
+
+    const handleItemClose = () => {
+        setAnchorItemEl(null);
+    }
 
     const { isDark, setTheme } = React.useContext(CustomThemeContext);
 
@@ -40,8 +53,8 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
     }
 
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (event.type === 'keydown'){
-            if((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift') return;
+        if (event.type === 'keydown') {
+            if ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift') return;
         }
 
         setState({ ...state, drawer: open });
@@ -67,14 +80,14 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
 
     const imageSrc = isDark ? "/images/logo/logo_transparent_dark.png" : "/images/logo/logo_transparent.png";
 
-    const headerRef=  useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
     const footerRef = useRef<HTMLDivElement>(null);
     const breadcrumbsRef = useRef<HTMLDivElement>(null);
 
     const [minContentHeight, setMinContentHeight] = React.useState<number>(0);
 
     React.useEffect(() => {
-        if(headerRef && footerRef && breadcrumbsRef && headerRef.current && footerRef.current && breadcrumbsRef.current) setMinContentHeight(headerRef.current.clientHeight+footerRef.current.clientHeight+breadcrumbsRef.current.clientHeight);
+        if (headerRef && footerRef && breadcrumbsRef && headerRef.current && footerRef.current && breadcrumbsRef.current) setMinContentHeight(headerRef.current.clientHeight + footerRef.current.clientHeight + breadcrumbsRef.current.clientHeight);
     }, [headerRef.current?.clientHeight, footerRef.current?.clientHeight, breadcrumbsRef.current?.clientHeight])
 
 
@@ -102,14 +115,25 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                             </Grid>
                             {typeof data !== 'undefined' && data !== null ?
                                 <Grid item xs={4} md={8} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").href}>
-                                        <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
-                                    </Link>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").href}>
-                                        <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
-                                    </Link>
+                                    {data && data.socials ? data.socials.map((social: any, index: number) => {
+                                        return (
+                                            <Link key={index} target="_blank" href={social.href} sx={{ lineHeight: 0, '&:not(:first-of-type)': { mr: "4px" }, '& svg': { fontSize: "30px" } }}>
+                                                {social.type === "facebook"
+                                                    ? <FacebookIcon sx={{ color: isDark ? "#2374E1" : "#1877F2" }} />
+                                                    : social.type === "instagram" ?
+                                                        <InstagramIcon sx={{ color: isDark ? "#f50f56" : "#E4405F" }} />
+                                                        : social.type === "twitter" ?
+                                                            <Twitter sx={{ color: isDark ? "#1DA1F2" : "#1DA1F2" }} />
+                                                            : social.type === "youtube" ?
+                                                                <YouTube sx={{ color: isDark ? "#FF0000" : "#FF0000" }} />
+                                                                : social.type === "linkedin" ?
+                                                                    <LinkedIn sx={{ color: isDark ? "#0e76a8" : "#0e76a8" }} />
+                                                                    : null}
+                                            </Link>
+                                        )
+                                    }) : null}
                                 </Grid>
-                            :
+                                :
                                 <Grid item xs={4} md={8} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <></>
                                 </Grid>
@@ -156,82 +180,82 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                     }}
                 >
                     {typeof data !== 'undefined' && data !== null ?
-                    <Grid
-                        sx={{
-                            mt: [0, 0, 0, "-16px"],
-                            borderRadius: 0,
-                            justifyContent: "start",
-                            alignItems: "start",
-                            flexWrap: "nowrap",
-                            flexDirection: "column",
-                            position: "relative",
-                            fontWeight: 500,
-                        }}
-                        container
-                        spacing={2}
-                    >
-                        <Grid item xs={12}>
-                            <TopItem>
-                                <Link target="_blank" href={data.company_info.address_url} sx={{ display: "flex" }}>
-                                    <LocationCityIcon sx={{ mr: "8px" }}/>
-                                    { data.company_info.address_short }
-                                </Link>
-                            </TopItem>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TopItem>
-                                <Link href={"mailto:"+data.company_info.email} sx={{ display: "flex" }}>
-                                    <EmailIcon sx={{ mr: "8px" }}/>
-                                    { data.company_info.email }
-                                </Link>
-                            </TopItem>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TopItem>
-                                <Link href={"tel:"+(data.company_info.phone).replace(/[\(\)0 ]/g, '')} sx={{ display: "flex" }}>
-                                    <LocalPhoneIcon sx={{ mr: "8px" }}/>
-                                    { data.company_info.phone }
-                                </Link>
-                            </TopItem>
-                        </Grid>
-                        <Grid item xs={12} >
-                            <TopItem sx={{
-                                width: "100vw",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}>
-                                <Container sx={{ pl: 0, lineHeight: 0 }}>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").href}>
-                                        <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark?"#f50f56":"#E4405F" }} />
-                                    </Link>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").href}>
-                                        <FacebookIcon sx={{ fontSize: "30px", color: isDark?"#2374E1":"#1877F2" }}/>
-                                    </Link>
-                                </Container>
-                                <MaterialUISwitch onClick={() => setTheme()} sx={{ m: "0 1rem 0 1rem" }} checked={isDark} />
-                            </TopItem>
-                        </Grid>
                         <Grid
-                            item
-                            sx={
-                                {
-                                    position: "absolute",
-                                    top: "8px",
-                                    right: "0",
-                                    padding: "0 !important",
-                                }
-                            }
-                            xs={12}
+                            sx={{
+                                mt: [0, 0, 0, "-16px"],
+                                borderRadius: 0,
+                                justifyContent: "start",
+                                alignItems: "start",
+                                flexWrap: "nowrap",
+                                flexDirection: "column",
+                                position: "relative",
+                                fontWeight: 500,
+                            }}
+                            container
+                            spacing={2}
                         >
-                            <Button
-                                sx={{ p: 0 }}
-                                onClick={toggleDrawer(false)}
+                            <Grid item xs={12}>
+                                <TopItem>
+                                    <Link target="_blank" href={data.company_info.address_url} sx={{ display: "flex" }}>
+                                        <LocationCityIcon sx={{ mr: "8px" }} />
+                                        {data.company_info.address_short}
+                                    </Link>
+                                </TopItem>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TopItem>
+                                    <Link href={"mailto:" + data.company_info.email} sx={{ display: "flex" }}>
+                                        <EmailIcon sx={{ mr: "8px" }} />
+                                        {data.company_info.email}
+                                    </Link>
+                                </TopItem>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TopItem>
+                                    <Link href={"tel:" + (data.company_info.phone).replace(/[\(\)0 ]/g, '')} sx={{ display: "flex" }}>
+                                        <LocalPhoneIcon sx={{ mr: "8px" }} />
+                                        {data.company_info.phone}
+                                    </Link>
+                                </TopItem>
+                            </Grid>
+                            <Grid item xs={12} >
+                                <TopItem sx={{
+                                    width: "100vw",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                }}>
+                                    <Container sx={{ pl: 0, lineHeight: 0 }}>
+                                        <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").href}>
+                                            <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark ? "#f50f56" : "#E4405F" }} />
+                                        </Link>
+                                        <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").href}>
+                                            <FacebookIcon sx={{ fontSize: "30px", color: isDark ? "#2374E1" : "#1877F2" }} />
+                                        </Link>
+                                    </Container>
+                                    <MaterialUISwitch onClick={() => setTheme()} sx={{ m: "0 1rem 0 1rem" }} checked={isDark} />
+                                </TopItem>
+                            </Grid>
+                            <Grid
+                                item
+                                sx={
+                                    {
+                                        position: "absolute",
+                                        top: "8px",
+                                        right: "0",
+                                        padding: "0 !important",
+                                    }
+                                }
+                                xs={12}
                             >
-                                <CloseIcon fontSize="large" />
-                            </Button>
+                                <Button
+                                    sx={{ p: 0 }}
+                                    onClick={toggleDrawer(false)}
+                                >
+                                    <CloseIcon fontSize="large" />
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    :
+                        :
                         null
                     }
                 </Paper>
@@ -263,65 +287,100 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                                     width={138}
                                     height={93}
                                     quality={"100"}
-                                    //objectFit="cover"
+                                //objectFit="cover"
                                 >
 
                                 </Image>
                             </Box>
                         </Grid>
                         <Grid item xs={12} sx={{ width: "100%" }}>
-                            <Box textAlign="center" sx={{ display: "flex", flexDirection: "column", fontSize: "1.5rem", fontWeight: 600, width: "100%"  }}>
-                                <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/">Naslovnica</Link>
-                                
-                                <Button
-                                    id="usluge-i-cjenik"
-                                    aria-controls={open ? 'basic-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={handleClick}
-                                    sx={{
-                                        textTransform: "none",
-                                        textDecoration: "underline",
-                                        textDecorationColor: "rgba(144, 202, 249, 0.4)",
-                                        fontSize: "1.5rem",
-                                        fontWeight: "600",
-                                        lineHeight: "1.2",
-                                        marginRight: "2px",
-                                        letterSpacing: "0.00938em",
-                                        borderRadius: 0,
-                                        p: "8px 0" }}
-                                    endIcon={<KeyboardArrowDownIcon sx={{ fontSize: "18px !important", }} />}
-                                >
-                                    Usluge i Cjenik
-                                </Button>
-                                <Menu
-                                    id="basic-menu"
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    MenuListProps={{
-                                    'aria-labelledby': 'usluge-i-cjenik',
-                                    }}
-                                    PaperProps={{
-                                        sx: { minWidth: "100%", left: "0 !important", 'a': { fontWeight: 600 } }
-                                    }}
-                                >
-                                    <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/dermatologija">Dermatologija</Link>
-                                    </MenuItem>
-                                    <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/kozmetologija">Kozmetologija</Link>
-                                    </MenuItem>
-                                    <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/kirurgija">Kirurgija</Link>
-                                    </MenuItem>
-                                    <MenuItem sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleClose}>
-                                        <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': {backgroundColor: 'transparent',} }} href="/gostojuci-doktori">Gostujući doktori</Link>
-                                    </MenuItem>
-                                </Menu>
-                                <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/faq">FAQ</Link>
-                                <Link onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href="/kontakt">Kontakt</Link>
-                            </Box>
+                            {typeof data !== "undefined" && data && data.navigation ?
+                                <Box textAlign="center" sx={{ display: "flex", flexDirection: "column", fontSize: "1.5rem", fontWeight: 600, width: "100%" }}>
+                                    {data.navigation.filter((item: any) => item.parent_id === null).map((navItem: any) => (
+                                        navItem.type === "link" ?
+                                            <Link key={"mobileNavLink_+" + navItem.id} onClick={toggleDrawer(false)} sx={{ p: "8px 0" }} href={typeof navItem.href !== "undefined" && navItem.href ? navItem.href : "#"}>{navItem.name}</Link>
+
+                                            : navItem.type === "button" ?
+                                                <Button
+                                                    key={"mobileNavButton_" + navItem.id}
+                                                    id={"mobileNavItem_" + navItem.id}
+                                                    aria-controls={(anchorItemEl && anchorItemEl["mobileNavItem_" + navItem.id]) ? 'basic-menu' : undefined}
+                                                    aria-haspopup="true"
+                                                    aria-expanded={(anchorItemEl && anchorItemEl["mobileNavItem_" + navItem.id]) ? 'true' : undefined}
+                                                    onClick={handleItemClick}
+                                                    sx={{
+                                                        textTransform: "none",
+                                                        textDecoration: "underline",
+                                                        textDecorationColor: "rgba(144, 202, 249, 0.4)",
+                                                        fontSize: "1.5rem",
+                                                        fontWeight: "600",
+                                                        lineHeight: "1.2",
+                                                        marginRight: "2px",
+                                                        letterSpacing: "0.00938em",
+                                                        borderRadius: 0,
+                                                        p: "8px 0"
+                                                    }}
+                                                    endIcon={<KeyboardArrowDownIcon sx={{ fontSize: "18px !important", }} />}
+                                                >
+                                                    {navItem.name}
+                                                </Button>
+                                                :
+                                                null
+                                    ))}
+                                    {
+                                        data.navigation.filter((navItem: any) => navItem.type === "button").map((navItem: any) => (
+                                            <Menu
+                                                key={"mobileNavMenu_" + navItem.id}
+                                                id={"mobileNavMenu_" + navItem.id}
+                                                anchorEl={(anchorItemEl) ? anchorItemEl["mobileNavItem_" + navItem.id] : null}
+                                                open={(anchorItemEl && anchorItemEl["mobileNavItem_" + navItem.id]) ? true : false}
+                                                onClose={handleItemClose}
+                                                MenuListProps={{
+                                                    'aria-labelledby': 'navItem_' + navItem.id,
+                                                }}
+                                                PaperProps={{
+                                                    sx: { minWidth: "100%", left: "0 !important", 'a': { fontWeight: 600 } }
+                                                }}
+                                            >
+                                                {data.navigation.filter((itemChild: any) => itemChild.parent_id === navItem.id).map((navItemChild: any) => (
+                                                    navItemChild.type === "link" ?
+                                                        <MenuItem key={navItemChild.id} sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleItemClose}>
+                                                            <Link onClick={toggleDrawer(false)} sx={{ display: "block", '&:hover': { backgroundColor: 'transparent', } }} href={typeof navItemChild.href !== "undefined" && navItemChild.href ? navItemChild.href : "#"}>{navItemChild.name}</Link>
+                                                        </MenuItem>
+                                                        : navItemChild.type === "button" ?
+                                                            <MenuItem key={navItemChild.id} sx={{ fontSize: "1.5rem", justifyContent: "center" }} onClick={handleItemClose}>
+                                                                <Button
+                                                                    id={"mobileNavItem_" + navItemChild.id}
+                                                                    aria-controls={(anchorItemEl && anchorItemEl["mobileNavItem_" + navItemChild.id]) ? 'basic-menu' : undefined}
+                                                                    aria-haspopup="true"
+                                                                    aria-expanded={(anchorItemEl && anchorItemEl["mobileNavItem_" + navItemChild.id]) ? 'true' : undefined}
+                                                                    onClick={handleItemClick}
+                                                                    sx={{
+                                                                        textTransform: "none",
+                                                                        textDecoration: "underline",
+                                                                        textDecorationColor: "rgba(144, 202, 249, 0.4)",
+                                                                        fontSize: "1.5rem",
+                                                                        fontWeight: "600",
+                                                                        lineHeight: "1.2",
+                                                                        marginRight: "2px",
+                                                                        letterSpacing: "0.00938em",
+                                                                        borderRadius: 0,
+                                                                        p: "8px 0"
+                                                                    }}
+                                                                    endIcon={<KeyboardArrowDownIcon sx={{ fontSize: "18px !important", }} />}
+                                                                >
+                                                                    {navItem.name}
+                                                                </Button>
+                                                            </MenuItem>
+                                                            :
+                                                            null
+                                                ))}
+                                            </Menu>
+                                        ))
+                                    }
+                                </Box>
+                                : null
+                            }
                         </Grid>
                     </Grid>
                 </Paper>
@@ -330,7 +389,7 @@ const MobileLayout = ({children, data}: MobileLayoutProps) => {
                 elevation={2}
                 square
                 sx={{
-                    minHeight: 'calc(100vh - '+(minContentHeight+1)+'px)'
+                    minHeight: 'calc(100vh - ' + (minContentHeight + 1) + 'px)'
                 }}
             >
                 {children}

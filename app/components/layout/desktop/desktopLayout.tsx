@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import React, { useRef, useEffect, useState } from "react";
 import { CustomThemeContext } from "../../../store/customThemeContext";
 import Footer from '../footer/footer';
+import { LinkedIn, Twitter, YouTube } from "@mui/icons-material";
 
 interface DesktopLayoutProps {
     children: React.ReactNode,
@@ -32,6 +33,13 @@ const StyledLink = styled(Link)(({ theme }) => ({
     fontWeight: 600,
     fontSize: "1.2rem",
     '&:hover': { backgroundColor: theme.palette.action.hover, borderRadius: "5px" },
+    '&.active': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        borderRadius: "5px",
+
+        '&:hover': { backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }
+    }
 }))
 
 const HideOnScroll = (props: ScrollProps) => {
@@ -113,7 +121,7 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                 </Link>
                             </TopItem>
                         </Grid>
-                        <Grid item xs={6} lg={4}>
+                        <Grid item xs={6} lg={3}>
                             <TopItem>
                                 <Link href={"mailto:" + data.company_info.email} sx={{ display: "flex" }}>
                                     <EmailIcon sx={{ mr: "8px" }} />
@@ -121,7 +129,7 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                 </Link>
                             </TopItem>
                         </Grid>
-                        <Grid item xs={6} lg={4}>
+                        <Grid item xs={6} lg={3}>
                             <TopItem>
                                 <Link href={"tel:" + (data.company_info.phone).replace(/[\(\)0 ]/g, '')} sx={{ display: "flex" }}>
                                     <LocalPhoneIcon sx={{ mr: "8px" }} />
@@ -129,15 +137,26 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                 </Link>
                             </TopItem>
                         </Grid>
-                        <Grid item xs={6} lg={1}>
+                        <Grid item xs={6} lg={2}>
                             <TopItem>
                                 <Box sx={{ pl: 0, lineHeight: 0, display: "flex" }}>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "instagram").href}>
-                                        <InstagramIcon sx={{ mr: "4px", fontSize: "30px", color: isDark ? "#f50f56" : "#E4405F" }} />
-                                    </Link>
-                                    <Link sx={{ lineHeight: 0 }} target="_blank" href={data.socials.find((social: any) => social.type === "facebook").href}>
-                                        <FacebookIcon sx={{ fontSize: "30px", color: isDark ? "#2374E1" : "#1877F2" }} />
-                                    </Link>
+                                    {data && data.socials ? data.socials.map((social: any, index: number) => {
+                                        return (
+                                            <Link key={index} target="_blank" href={social.href} sx={{ lineHeight: 0, '&:not(:first-of-type)': { mr: "4px" }, '& svg': { fontSize: "30px" } }}>
+                                                {social.type === "facebook"
+                                                    ? <FacebookIcon sx={{ color: isDark ? "#2374E1" : "#1877F2" }} />
+                                                    : social.type === "instagram" ?
+                                                        <InstagramIcon sx={{ color: isDark ? "#f50f56" : "#E4405F" }} />
+                                                        : social.type === "twitter" ?
+                                                            <Twitter sx={{ color: isDark ? "#1DA1F2" : "#1DA1F2" }} />
+                                                            : social.type === "youtube" ?
+                                                                <YouTube sx={{ color: isDark ? "#FF0000" : "#FF0000" }} />
+                                                                : social.type === "linkedin" ?
+                                                                    <LinkedIn sx={{ color: isDark ? "#0e76a8" : "#0e76a8" }} />
+                                                                    : null}
+                                            </Link>
+                                        )
+                                    }) : null}
                                 </Box>
                                 <MaterialUISwitch onClick={() => setTheme()} sx={{ m: 1 }} checked={isDark} />
                             </TopItem>
@@ -192,7 +211,7 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                     >
                                         {data.navigation.filter((item: any) => item.parent_id === null).map((navItem: any) => (
                                             navItem.type === "link" ?
-                                                <StyledLink href={typeof navItem.href !== "undefined" && navItem.href ? navItem.href : "#"} key={"navLink_+" + navItem.id}>
+                                                <StyledLink className={router.pathname === navItem.href ? "active" : undefined} href={typeof navItem.href !== "undefined" && navItem.href ? navItem.href : "#"} key={"navLink_+" + navItem.id}>
                                                     {navItem.name}
                                                 </StyledLink>
 
@@ -239,10 +258,10 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                                     {data.navigation.filter((itemChild: any) => itemChild.parent_id === navItem.id).map((navItemChild: any) => (
                                                         navItemChild.type === "link" ?
                                                             <MenuItem key={navItemChild.id} sx={{ p: 0, '&:not(:last-of-type)': { mb: "4px" } }} onClick={handleItemClose}>
-                                                                <StyledLink sx={{ p: "16px 32px", width: "100%", '&:hover': { backgroundColor: 'transparent', } }} href={typeof navItemChild.href !== "undefined" && navItemChild.href ? navItemChild.href : "#"}>{navItemChild.name}</StyledLink>
+                                                                <StyledLink sx={{ mr: 0, p: "16px 32px", width: "100%", '&:hover': { backgroundColor: 'transparent', } }} href={typeof navItemChild.href !== "undefined" && navItemChild.href ? navItemChild.href : "#"}>{navItemChild.name}</StyledLink>
                                                             </MenuItem>
                                                             : navItemChild.type === "button" ?
-                                                                <MenuItem key={navItemChild.id} sx={{ p: 0,  '&:not(:last-of-type)': { mb: "4px" } }} onClick={handleItemClose}>
+                                                                <MenuItem key={navItemChild.id} sx={{ p: 0, '&:not(:last-of-type)': { mb: "4px" } }} onClick={handleItemClose}>
                                                                     <Button
                                                                         id={"navItem_" + navItemChild.id}
                                                                         aria-controls={(anchorItemEl && anchorItemEl["navItem_" + navItemChild.id]) ? 'basic-menu' : undefined}

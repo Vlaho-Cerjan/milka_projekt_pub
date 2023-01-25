@@ -49,7 +49,7 @@ const ServicesGrid = ({ services, servicesSubprices }: { services: any, services
                                     {service.description}
                                 </Typography>
                                 : null}
-                            {service.value !== null ?
+                            {service.value !== null && eurPrice ?
                                 <Typography>
                                     {service.value} kn / {Math.round(((service.value / eurPrice) + Number.EPSILON) * 100) / 100} €
                                 </Typography>

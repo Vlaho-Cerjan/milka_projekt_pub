@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin-arm64"]
 }
 
 datasource db {
@@ -172,7 +173,8 @@ model socials {
   name       String  @db.VarChar(255)
   href       String  @db.Text
   type       String  @db.Text
-  created_at String  @default(dbgenerated("(current_timestamp())")) @db.VarChar(255)
+  active     Int     @default(1) @db.TinyInt
+  created_at String  @db.VarChar(255)
   updated_at String? @db.VarChar(255)
   deleted_at String? @db.VarChar(255)
 }
