@@ -42,19 +42,22 @@ export const getStaticProps: GetStaticProps = async () => {
         }
     );
 
-    const services_subprices = await prisma.services_price_list.findMany(
+    const services_prices = await prisma.services_price_list.findMany(
         {
             where: {
                 service_list_id: {
                     in: [...new Set(services.map((service) => service.id))]
                 }
+            },
+            orderBy: {
+                item_order: "asc"
             }
         }
     );
-    return { props: { page_info, kozmetologija, services, services_subprices } };
+    return { props: { page_info, kozmetologija, services, services_prices } };
 };
 
-const Kozmetologija = ({ page_info, kozmetologija, services, services_subprices }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Kozmetologija = ({ page_info, kozmetologija, services, services_prices }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const { width } = useWindowSize();
     const { theme } = React.useContext(CustomThemeContext);
 
@@ -82,7 +85,7 @@ const Kozmetologija = ({ page_info, kozmetologija, services, services_subprices 
                     </Typography>
                 </Box>
                 <Box sx={{ mt: "32px" }}>
-                    <ServicesGrid services={services} servicesSubprices={services_subprices} />
+                    <ServicesGrid services={services} servicesPrices={services_prices} />
                 </Box>
             </StyledContainer>
         </Container >

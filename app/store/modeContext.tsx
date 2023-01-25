@@ -13,7 +13,7 @@ export const ModeContext = createContext<{
   setMode: () => {}
 });
 
-export const ModeProvider: React.FC = ({ children }) => {
+export const ModeProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState('light');
 
   useEffect(() => {

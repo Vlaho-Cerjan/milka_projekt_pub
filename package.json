@@ -19,10 +19,9 @@
     "@plaiceholder/next": "^2.3.0",
     "@prisma/client": "^4.6.1",
     "@sendgrid/mail": "^7.7.0",
-    "framer-motion": "^7.3.5",
+    "framer-motion": "^8.5.2",
     "leaflet": "^1.8.0",
-    "next": "^12.2.2",
-    "next-transpile-modules": "^9.0.0",
+    "next": "^13.1.5",
     "notistack": "^2.0.5",
     "plaiceholder": "^2.3.0",
     "react": "^18.2.0",
@@ -36,12 +35,12 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.7.11",
-    "@types/node": "17.0.13",
-    "@types/react": "17.0.38",
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.27",
     "babel-plugin-styled-components": "^2.0.2",
-    "eslint": "8.7.0",
-    "eslint-config-next": "12.0.9",
+    "eslint": "^8.32.0",
+    "eslint-config-next": "^13.1.5",
     "prisma": "^4.6.1",
-    "typescript": "4.5.5"
+    "typescript": "^4.9.4"
   }
 }

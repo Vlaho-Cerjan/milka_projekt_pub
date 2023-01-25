@@ -1,7 +1,7 @@
 // language store
 // setting the chosen language of the site
 
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 
 export const defaultLocale = "en";
 export const locales = ["en", "es"];
@@ -13,7 +13,7 @@ export const LanguageContext = createContext<{
   setLocale: () => {}
 });
 
-export const LanguageProvider: React.FC = ({ children }) => {
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [locale, setLocale] = useState('en');
 
   useEffect(() => {

@@ -10,16 +10,19 @@ datasource db {
 
 model admins {
   id          Int     @id @default(autoincrement())
+  email       String  @db.VarChar(255)
   first_name  String? @db.VarChar(255)
   last_name   String? @db.VarChar(255)
+  password    String  @db.Text
   title       String? @db.VarChar(255)
   admin_title String? @db.VarChar(255)
   admin_type  String? @db.VarChar(255)
-  create_date String? @db.VarChar(255)
-  update_date String? @db.VarChar(255)
-  delete_date String? @db.VarChar(255)
+  create_at   String? @db.VarChar(255)
+  update_at   String? @db.VarChar(255)
+  delete_at   String? @db.VarChar(255)
   img_src     String? @db.MediumText
   alt         String? @db.MediumText
+  active      Int     @default(1) @db.TinyInt
 }
 
 model blog {
@@ -30,9 +33,9 @@ model blog {
   categories        Int?
   tags              Int?
   slug              String? @db.VarChar(255)
-  create_date       String? @db.VarChar(255)
-  update_date       String? @db.VarChar(255)
-  delete_date       String? @db.VarChar(255)
+  create_at         String? @db.VarChar(255)
+  update_at         String? @db.VarChar(255)
+  delete_at         String? @db.VarChar(255)
   alt               String? @db.MediumText
   short_description String? @db.MediumText
 }
@@ -41,9 +44,9 @@ model categories {
   id          Int     @id @default(autoincrement())
   name        String  @db.VarChar(255)
   description String? @db.MediumText
-  create_date String? @db.VarChar(255)
-  update_date String? @db.VarChar(255)
-  delete_date String? @db.VarChar(255)
+  create_at   String? @db.VarChar(255)
+  update_at   String? @db.VarChar(255)
+  delete_at   String? @db.VarChar(255)
 }
 
 model company_info {
@@ -69,12 +72,13 @@ model doctors {
   bio             String? @db.MediumText
   email           String? @db.VarChar(255)
   phone           String? @db.VarChar(255)
-  create_date     String? @db.VarChar(255)
-  update_date     String? @db.VarChar(255)
-  delete_date     String? @db.VarChar(255)
+  create_at       String? @db.VarChar(255)
+  update_at       String? @db.VarChar(255)
+  delete_at       String? @db.VarChar(255)
   img_src         String? @db.MediumText
   slug            String? @db.VarChar(255)
   alt             String? @db.MediumText
+  active          Int     @default(1) @db.TinyInt
 }
 
 model employes {
@@ -87,22 +91,22 @@ model employes {
   email           String? @db.VarChar(255)
   phone           String? @db.VarChar(255)
   employe_title   String? @db.VarChar(255)
-  create_date     String? @db.VarChar(255)
-  update_date     String? @db.VarChar(255)
-  delete_date     String? @db.VarChar(255)
+  create_at       String? @db.VarChar(255)
+  update_at       String? @db.VarChar(255)
+  delete_at       String? @db.VarChar(255)
   img_src         String? @db.MediumText
   slug            String? @db.VarChar(255)
   alt             String? @db.MediumText
 }
 
 model faq {
-  id          Int     @id @default(autoincrement())
-  title       String  @db.MediumText
-  content     String  @db.MediumText
-  faq_order   Int
-  create_date String? @db.VarChar(255)
-  update_date String? @db.VarChar(255)
-  delete_date String? @db.VarChar(255)
+  id        Int     @id @default(autoincrement())
+  title     String  @db.MediumText
+  content   String  @db.MediumText
+  faq_order Int
+  create_at String? @db.VarChar(255)
+  update_at String? @db.VarChar(255)
+  delete_at String? @db.VarChar(255)
 }
 
 model services {
@@ -110,28 +114,28 @@ model services {
   name        String  @db.VarChar(255)
   description String? @db.MediumText
   doctors_id  String? @db.VarChar(255)
-  create_date String? @db.VarChar(255)
-  update_date String? @db.VarChar(255)
-  delete_date String? @db.VarChar(255)
+  create_at   String? @db.VarChar(255)
+  update_at   String? @db.VarChar(255)
+  delete_at   String? @db.VarChar(255)
   img_src     String? @db.MediumText
   slug        String? @db.VarChar(255)
   alt         String? @db.MediumText
+  active      Int     @default(1) @db.TinyInt
+  item_order  Int
 }
 
 model services_list {
   id             Int     @id @default(autoincrement())
   name           String  @db.VarChar(255)
-  value          Float?
-  discount       Float?
   usluga_id      Int?
   pod_usluga_id  Int?
   description    String? @db.MediumText
-  value_range    String? @db.VarChar(255)
   services_order Int?
   highlighted    Int     @default(0) @db.TinyInt
-  create_date    String? @db.VarChar(255)
-  update_date    String? @db.VarChar(255)
-  delete_date    String? @db.VarChar(255)
+  active         Int     @default(1) @db.TinyInt
+  create_at      String? @db.VarChar(255)
+  update_at      String? @db.VarChar(255)
+  delete_at      String? @db.VarChar(255)
 }
 
 model subservices {
@@ -140,20 +144,22 @@ model subservices {
   usluga_id   Int
   description String? @db.MediumText
   doctors_id  String? @db.VarChar(255)
-  create_date String? @db.VarChar(255)
-  update_date String? @db.VarChar(255)
-  delete_date String? @db.VarChar(255)
+  create_at   String? @db.VarChar(255)
+  update_at   String? @db.VarChar(255)
+  delete_at   String? @db.VarChar(255)
   img_src     String? @db.MediumText
   slug        String? @db.VarChar(255)
   alt         String? @db.MediumText
+  active      Int     @default(1) @db.TinyInt
+  item_order  Int
 }
 
 model tags {
-  id          Int     @id
-  NAME        String  @db.VarChar(255)
-  create_date String? @db.VarChar(255)
-  update_date String? @db.VarChar(255)
-  delete_date String? @db.VarChar(255)
+  id        Int     @id
+  NAME      String  @db.VarChar(255)
+  create_at String? @db.VarChar(255)
+  update_at String? @db.VarChar(255)
+  delete_at String? @db.VarChar(255)
 }
 
 model page_info {
@@ -164,43 +170,45 @@ model page_info {
   page_slug        String  @db.Text
   image            String  @db.Text
   openGraphType    String  @db.Text
-  createdAt        String  @db.VarChar(255)
-  updatedAt        String? @db.VarChar(255)
+  create_at        String  @db.VarChar(255)
+  update_at        String? @db.VarChar(255)
+  delete_at        String? @db.VarChar(255)
 }
 
 model socials {
-  id         Int     @id @default(autoincrement())
-  name       String  @db.VarChar(255)
-  href       String  @db.Text
-  type       String  @db.Text
-  active     Int     @default(1) @db.TinyInt
-  created_at String  @db.VarChar(255)
-  updated_at String? @db.VarChar(255)
-  deleted_at String? @db.VarChar(255)
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(255)
+  href      String  @db.Text
+  type      String  @db.Text
+  active    Int     @default(1) @db.TinyInt
+  create_at String  @db.VarChar(255)
+  update_at String? @db.VarChar(255)
+  delete_at String? @db.VarChar(255)
 }
 
 model navigation {
-  id         Int     @id @default(autoincrement())
-  name       String  @db.VarChar(255)
-  href       String  @db.VarChar(255)
-  type       String  @db.VarChar(255)
-  parent_id  Int?
-  nav_order  Int
-  created_at String? @db.VarChar(255)
-  updated_at String? @db.VarChar(255)
-  deleted_at String? @db.VarChar(255)
-  active     Int     @default(1) @db.TinyInt
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(255)
+  href      String  @db.VarChar(255)
+  type      String  @db.VarChar(255)
+  parent_id Int?
+  nav_order Int
+  create_at String? @db.VarChar(255)
+  update_at String? @db.VarChar(255)
+  delete_at String? @db.VarChar(255)
+  active    Int     @default(1) @db.TinyInt
 }
 
 model services_price_list {
   id              Int     @id @default(autoincrement())
   service_list_id Int
-  title           String  @db.VarChar(255)
+  title           String? @db.VarChar(255)
   description     String? @db.Text
   value           Float
   discount        Float?
-  created_at      String  @db.VarChar(255)
-  updated_at      String? @db.VarChar(255)
-  deleted_at      String? @db.VarChar(255)
+  item_order      Int
+  create_at       String  @db.VarChar(255)
+  update_at       String? @db.VarChar(255)
+  delete_at       String? @db.VarChar(255)
   active          Int     @default(1) @db.TinyInt
 }

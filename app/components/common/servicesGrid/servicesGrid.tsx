@@ -2,19 +2,9 @@ import { Grid, Card, CardContent, Typography, Box, Divider } from "@mui/material
 import { motion } from "framer-motion";
 import React from "react";
 import { CustomThemeContext } from "../../../store/customThemeContext";
-import { getEUR } from "../../../utility/hrkToEur";
 
-const ServicesGrid = ({ services, servicesSubprices }: { services: any, servicesSubprices: any }) => {
+const ServicesGrid = ({ services, servicesPrices }: { services: any, servicesPrices: any }) => {
     const { theme } = React.useContext(CustomThemeContext);
-    const [eurPrice, setEurPrice] = React.useState<any>(null);
-
-    React.useEffect(() => {
-        const getEurPrice = async () => {
-            const eur = await getEUR();
-            setEurPrice(parseFloat(eur));
-        }
-        getEurPrice();
-    }, []);
 
     return (
         <Grid
@@ -48,19 +38,31 @@ const ServicesGrid = ({ services, servicesSubprices }: { services: any, services
                                 <Typography sx={{ pb: "12px" }}>
                                     {service.description}
                                 </Typography>
-                                : null}
-                            {service.value !== null && eurPrice ?
-                                <Typography>
-                                    {service.value} kn / {Math.round(((service.value / eurPrice) + Number.EPSILON) * 100) / 100} €
-                                </Typography>
+                                : null
+                            }
+                            {
+                            typeof servicesPrices !== "undefined" && servicesPrices.length > 0 ?
+                                // check if service has only one price
+                                servicesPrices.filter((subprice: any) => subprice.service_list_id === service.id).length === 1 ?
+                                    // write out title with price and description below
+                                    <Box sx={{
+                                        padding: "0",
+                                    }}>
+                                        <Typography>
+                                            <strong>{servicesPrices.filter((subprice: any) => subprice.service_list_id === service.id)[0].title}</strong> {servicesPrices.filter((subprice: any) => subprice.service_list_id === service.id)[0].value} €
+                                        </Typography>
+                                        <Typography>
+                                            {servicesPrices.filter((subprice: any) => subprice.service_list_id === service.id)[0].description}
+                                        </Typography>
+                                    </Box>
                                 :
-                                typeof servicesSubprices !== "undefined" && servicesSubprices.length > 0 && servicesSubprices.filter((subprice: any) => subprice.service_list_id === service.id).length > 0 ?
-                                    servicesSubprices.filter((subprice: any) => subprice.service_list_id === service.id).map((subprice: any, index: number) => (
+                                servicesPrices.filter((subprice: any) => subprice.service_list_id === service.id).length > 0 ?
+                                    servicesPrices.filter((subprice: any) => subprice.service_list_id === service.id).map((subprice: any, index: number) => (
                                         <Box sx={{
                                             padding: "0",
                                         }} key={"subprice_" + index}>
                                             <Typography>
-                                                <strong>{subprice.title}</strong> - {subprice.value} kn / {Math.round(((subprice.value / eurPrice) + Number.EPSILON) * 100) / 100} €
+                                                <strong>{subprice.title}</strong> - {subprice.value} €
                                             </Typography>
                                             <Typography>
                                                 {subprice.description}
@@ -69,6 +71,7 @@ const ServicesGrid = ({ services, servicesSubprices }: { services: any, services
                                         </Box>
                                     ))
                                     : null
+                                : null
                             }
                         </CardContent>
                     </Card>
