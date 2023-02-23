@@ -23,6 +23,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
     const faq = await prisma.faq.findMany(
         {
+            where:{
+                active: 1
+            },
             orderBy: {
                 faq_order: "asc"
             }

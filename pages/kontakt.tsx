@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps = async () => {
             }
         }
     );
-    const employes = await prisma.employes.findMany(
+    const employees = await prisma.employees.findMany(
         {
             where: {
                 employe_title: {
@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps = async () => {
             }
         }
     );
-    const reception = await prisma.employes.findFirst(
+    const reception = await prisma.employees.findFirst(
         {
             where: {
                 employe_title: {
@@ -46,10 +46,10 @@ export const getStaticProps: GetStaticProps = async () => {
             }
         }
     );
-    return { props: { reception, employes, companyInfo, page_info } };
+    return { props: { reception, employees, companyInfo, page_info } };
 };
 
-const Kontakt = ({ reception, employes, companyInfo, page_info }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const router = useRouter();
     const { width } = useWindowSize();
     const { theme } = React.useContext(CustomThemeContext);
@@ -86,16 +86,16 @@ const Kontakt = ({ reception, employes, companyInfo, page_info }: InferGetStatic
                                 Doktori Varela
                             </Typography>
                             {
-                                typeof employes !== "undefined" && employes.length > 0 ?
+                                typeof employees !== "undefined" && employees.length > 0 ?
                                     <Box sx={{ mt: "4px" }}>
                                         <Typography>
-                                            {employes[0].title + " " + employes[0].first_name + " " + employes[0].aditional_names + " " + employes[0].last_name}
+                                            {employees[0].title + " " + employees[0].first_name + " " + employees[0].aditional_names + " " + employees[0].last_name}
                                         </Typography>
                                         <Typography>
-                                            {employes[1].title + " " + employes[1].first_name + " " + employes[1].aditional_names + " " + employes[1].last_name}
+                                            {employees[1].title + " " + employees[1].first_name + " " + employees[1].aditional_names + " " + employees[1].last_name}
                                         </Typography>
                                         <Link
-                                            href={"tel:"+(employes[0].phone).replace(/[\(\)0 ]/g, '')}
+                                            href={"tel:"+(employees[0].phone).replace(/[\(\)0 ]/g, '')}
                                             sx={{
                                                 color: "text.primary",
                                                 display: "flex",
@@ -103,10 +103,10 @@ const Kontakt = ({ reception, employes, companyInfo, page_info }: InferGetStatic
                                             }}
                                         >
                                             <Phone sx={{ fontSize: "18px", mr: "4px" }} />
-                                            {employes[0].phone}
+                                            {employees[0].phone}
                                         </Link>
                                         <Link
-                                            href={"mailto:"+employes[0].email}
+                                            href={"mailto:"+employees[0].email}
                                             sx={{
                                                 color: "text.primary",
                                                 display: "flex",
@@ -114,7 +114,7 @@ const Kontakt = ({ reception, employes, companyInfo, page_info }: InferGetStatic
                                             }}
                                         >
                                             <MailOutlineOutlined sx={{ fontSize: "18px", mr: "8px" }} />
-                                            {employes[0].email}
+                                            {employees[0].email}
                                         </Link>
                                     </Box>
                                     : null

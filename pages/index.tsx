@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const news = await prisma.blog.findMany({
     take: 4,
   })
-  const employes = await prisma.employes.findMany();
+  const employees = await prisma.employees.findMany();
   const companyInfo = await prisma.company_info.findFirst();
   const page_info = await prisma.page_info.findFirst(
     {
@@ -32,10 +32,10 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   );
 
-  return { props: { services, news, employes, companyInfo, page_info } };
+  return { props: { services, news, employees, companyInfo, page_info } };
 };
 
-const Home = ({ services, news, employes, companyInfo, page_info }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = ({ services, news, employees, companyInfo, page_info }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { width } = useWindowSize();
 
   return (
@@ -49,7 +49,7 @@ const Home = ({ services, news, employes, companyInfo, page_info }: InferGetStat
       }
       <OurServices services={services} />
       <ContactForm companyInfo={companyInfo} />
-      <OurTeam employes={employes} />
+      <OurTeam employees={employees} />
       <HowToFindUs companyInfo={companyInfo} />
       <MapWithNoSSR coords={companyInfo?.coords.split(",")} link={companyInfo?.address_url} title={companyInfo?.title} />
     </Container >

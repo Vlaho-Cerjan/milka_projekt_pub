@@ -81,7 +81,7 @@ model doctors {
   active          Int     @default(1) @db.TinyInt
 }
 
-model employes {
+model employees {
   id              Int     @id @default(autoincrement())
   first_name      String  @db.VarChar(255)
   aditional_names String? @db.VarChar(255)
