@@ -32,10 +32,13 @@ const Greeting = () => {
                     >
                         <Image
                             alt={"stock photo of a doctor with " + (isDark ? 'blue' : 'green') + " background"}
-                            quality={90}
+                            quality={100}
                             fill
                             sizes="100vw"
                             src="/images/home/doctor-stock-transparent.png"
+                            style={{
+                                objectFit: "cover",
+                            }}
                         />
                     </Box>
                     <Container
