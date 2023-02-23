@@ -5,7 +5,7 @@ import useWindowSize from '../app/utility/windowSize';
 import prisma from '../app/utility/prisma';
 
 export const getStaticProps: GetStaticProps = async () => {
-  //const employees = await prisma.employees.findMany();
+  //const employes = await prisma.employes.findMany();
   //const companyInfo = await prisma.company_info.findFirst();
   const page_info = await prisma.page_info.findFirst(
     {

@@ -12,17 +12,29 @@ import ContactForm from '../app/components/home/contactForm';
 
 import dynamic from 'next/dynamic';
 import HowToFindUs from '../app/components/home/howToFindUs';
+import React from 'react';
 
 const MapWithNoSSR = dynamic(() => import('../app/components/map/map'), {
   ssr: false,
 });
 
 export const getStaticProps: GetStaticProps = async () => {
-  const services = await prisma.services.findMany();
+  const services = await prisma.services.findMany({
+    where: {
+      active: 1
+    },
+    orderBy: {
+      item_order: "asc"
+    }
+  });
   const news = await prisma.blog.findMany({
     take: 4,
   })
-  const employees = await prisma.employees.findMany();
+  const employees = await prisma.employees.findMany({
+    where: {
+      active: 1
+    },
+  });
   const companyInfo = await prisma.company_info.findFirst();
   const page_info = await prisma.page_info.findFirst(
     {

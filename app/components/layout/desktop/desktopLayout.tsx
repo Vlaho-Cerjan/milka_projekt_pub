@@ -193,7 +193,6 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                         alt="logo image of Varela Clinic"
                                         width={138}
                                         height={93}
-                                        layout="fixed"
                                         quality={90}
                                     />
                                 </Box>

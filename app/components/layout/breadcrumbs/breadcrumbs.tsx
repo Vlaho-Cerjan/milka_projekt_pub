@@ -88,6 +88,9 @@ export interface BreadcrumbsProps {
 
   /** An inline style object for the outer container */
   containerStyle?: any | null;
+
+  /** Array of hrefs to not display */
+  omitHrefList?: Array<string> | undefined;
 }
 
 const defaultProps: BreadcrumbsProps = {
@@ -119,6 +122,7 @@ const NextBreadcrumbs = ({
   replaceCharacterList,
   transformLabel,
   omitIndexList,
+  omitHrefList
 }: BreadcrumbsProps) => {
   const router = useRouter();
   const { theme } = React.useContext(CustomThemeContext);
@@ -128,8 +132,11 @@ const NextBreadcrumbs = ({
 
   useEffect(() => {
     if (router) {
-      const linkPath = router.asPath.split('/');
+      let linkPath = router.asPath.split('/');
       linkPath.shift();
+
+      // Remove all elements from omitHrefList
+      if(omitHrefList && omitHrefList.length > 0) linkPath = linkPath.filter((path) => !omitHrefList?.includes(path));
 
       const pathArray = linkPath.map((path, i) => {
         return {

@@ -81,24 +81,6 @@ model doctors {
   active          Int     @default(1) @db.TinyInt
 }
 
-model employees {
-  id              Int     @id @default(autoincrement())
-  first_name      String  @db.VarChar(255)
-  aditional_names String? @db.VarChar(255)
-  last_name       String? @db.VarChar(255)
-  title           String? @db.VarChar(255)
-  bio             String? @db.MediumText
-  email           String? @db.VarChar(255)
-  phone           String? @db.VarChar(255)
-  employe_title   String? @db.VarChar(255)
-  create_at       String? @db.VarChar(255)
-  update_at       String? @db.VarChar(255)
-  delete_at       String? @db.VarChar(255)
-  img_src         String? @db.MediumText
-  slug            String? @db.VarChar(255)
-  alt             String? @db.MediumText
-}
-
 model faq {
   id        Int     @id @default(autoincrement())
   title     String  @db.MediumText
@@ -107,6 +89,7 @@ model faq {
   create_at String? @db.VarChar(255)
   update_at String? @db.VarChar(255)
   delete_at String? @db.VarChar(255)
+  active    Int     @default(1) @db.TinyInt
 }
 
 model services {
@@ -210,5 +193,24 @@ model services_price_list {
   create_at       String  @db.VarChar(255)
   update_at       String? @db.VarChar(255)
   delete_at       String? @db.VarChar(255)
+  active          Int     @default(1) @db.TinyInt
+}
+
+model employees {
+  id              Int     @id @default(autoincrement())
+  first_name      String  @db.VarChar(255)
+  aditional_names String? @db.VarChar(255)
+  last_name       String? @db.VarChar(255)
+  title           String? @db.VarChar(255)
+  bio             String? @db.MediumText
+  email           String? @db.VarChar(255)
+  phone           String? @db.VarChar(255)
+  employe_title   String? @db.VarChar(255)
+  create_at       String? @db.VarChar(255)
+  update_at       String? @db.VarChar(255)
+  delete_at       String? @db.VarChar(255)
+  img_src         String? @db.MediumText
+  slug            String? @db.VarChar(255)
+  alt             String? @db.MediumText
   active          Int     @default(1) @db.TinyInt
 }

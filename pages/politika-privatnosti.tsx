@@ -6,7 +6,7 @@ import prisma from '../app/utility/prisma';
 import Title from '../app/components/common/title/title';
 
 export const getStaticProps: GetStaticProps = async () => {
-  //const employees = await prisma.employees.findMany();
+  //const employes = await prisma.employes.findMany();
   //const companyInfo = await prisma.company_info.findFirst();
   const page_info = await prisma.page_info.findFirst(
     {

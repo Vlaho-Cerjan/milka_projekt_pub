@@ -47,7 +47,7 @@ const socialTags = (page_info: any) => {
 };
 
 const SEO = ({page_info}: {page_info: any}) => {
-    if(typeof page_info === "undefined") {
+    if(typeof page_info === "undefined" || page_info === null) {
         return null;
     }
     const { page_slug, page_title, page_description, image, openGraphType } = page_info;
