@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Backdrop, Box, CircularProgress } from "@mui/material";
 import { ReactNode } from "react";
 import { CustomThemeContext } from '../../store/customThemeContext';
 import useWindowSize from '../../utility/windowSize';
@@ -15,10 +15,10 @@ const Layout = ({ children }: Props) => {
     const [data, setData] = React.useState(null);
     React.useEffect(() => {
         fetch('/api/layout-data')
-        .then((res) => res.json())
-        .then((data) => {
-            setData(data)
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                setData(data)
+            })
     }, []);
 
     return (
@@ -34,6 +34,10 @@ const Layout = ({ children }: Props) => {
                     <DesktopLayout data={data}>
                         {children}
                     </DesktopLayout>
+
+                    <Backdrop open={typeof data === "undefined" || data === null} sx={{ zIndex: 1000000 }} >
+                        <CircularProgress color="primary" />
+                    </Backdrop>
                 </Box>
             )
             :
@@ -48,6 +52,10 @@ const Layout = ({ children }: Props) => {
                     <MobileLayout data={data}>
                         {children}
                     </MobileLayout>
+
+                    <Backdrop open={typeof data === "undefined" || data === null} sx={{ zIndex: 1000000 }} >
+                        <CircularProgress color="primary" />
+                    </Backdrop>
                 </Box>
             )
     )
