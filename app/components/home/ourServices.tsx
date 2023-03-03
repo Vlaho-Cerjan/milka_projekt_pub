@@ -1,9 +1,10 @@
-import { Container, Typography, Grid, Card, CardActions, styled, CardContent, Button} from '@mui/material';
+import { Container, Typography, Grid, Card, CardActions, styled, CardContent, Button, Box} from '@mui/material';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Title from '../common/title/title';
 import { StyledContainer } from '../common/container/styledContainer';
+import { services } from '@prisma/client';
 
 const StyledCard = styled(Card)(() => ({
     height: "100%",
@@ -23,18 +24,7 @@ const StyledCardContent = styled(CardContent)(() => ({
 }))
 
 interface ServicesProps {
-    services: {
-        id: number,
-        name: string,
-        description: string,
-        img_src: string,
-        alt: string,
-        slug: string,
-        doctors_id: number[],
-        create_date: string,
-        update_date: string,
-        delete_date: string
-    }[]
+    services: services[]
 }
 
 
@@ -47,23 +37,29 @@ const OurServices = ({services}: ServicesProps) => {
                     <StyledCard
                         variant="outlined"
                     >
-                        <div>
+                        <Box
+                            sx={{
+                                position: "relative",
+                                height: "250px",
+                                width: "100%",
+                            }}
+                        >
                             <Image
-                                src={service.img_src}
-                                alt={service.alt}
-                                width={1920}
-                                height={1080}
+                                src={service.img_src ? service.img_src : ""}
+                                alt={service.alt ? service.alt : ""}
+                                fill
+                                style={{
+                                    objectFit: "cover",
+                                }}
                                 quality={90}
-                                layout="responsive"
                                 className="resImg"
-                                objectFit="cover"
                                 sizes="(max-width: 600px) 500px,
                                 (max-width: 750px) 250px,
                                 (max-width: 900px) 400px,
                                 (max-width: 1200px) 300px,
                                 250px"
                             />
-                        </div>
+                        </Box>
                         <StyledCardContent>
                             <Typography
                                 component="h3"
@@ -89,7 +85,7 @@ const OurServices = ({services}: ServicesProps) => {
                                 }}
                                 variant="contained"
                             >
-                                <Link href={service.slug.trim()}>
+                                <Link href={service.slug ? service.slug.trim() : "#"}>
                                     Saznajte Više
                                 </Link>
                             </Button>

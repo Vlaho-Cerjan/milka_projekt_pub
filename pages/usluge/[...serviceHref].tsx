@@ -10,7 +10,7 @@ import useWindowSize from '../../app/utility/windowSize';
 import Title from '../../app/components/common/title/title';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { services, services_list, subservices } from '@prisma/client';
+import { doctors, page_info, services, services_list, services_price_list, subservices } from '@prisma/client';
 
 export const getStaticProps = async ({ params }: { params: { serviceHref: string[] } }) => {
     const page_info = await prisma.page_info.findFirst(
@@ -165,10 +165,86 @@ export const getStaticPaths = async () => {
     return { paths, fallback: false };
 }
 
-const Service = ({ page_info, service, services, subservices, doctors, services_prices }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Service = ({ }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const { width } = useWindowSize();
     const { theme } = React.useContext(CustomThemeContext);
     const router = useRouter();
+
+    const [page_info, setPageInfo] = React.useState<page_info | null>(null);
+    const [service, setService] = React.useState<services | subservices | null>(null);
+    const [services, setServices] = React.useState<services_list[] | null>(null);
+    const [subservices, setSubservices] = React.useState<subservices[] | null>(null);
+    const [doctors, setDoctors] = React.useState<doctors[] | null>(null);
+    const [services_prices, setServicesPrices] = React.useState<services_price_list[] | null>(null);
+
+    React.useEffect(() => {
+        // fetch all data
+        if (typeof router.query.serviceHref !== "undefined") {
+            const serviceHref = router.query.serviceHref as string[];
+            const lastWord = serviceHref[serviceHref.length - 1];
+
+            fetch(`${process.env.NEXT_PUBLIC_API_URL}page_info/${lastWord}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data) {
+                        setPageInfo(data);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                }
+                );
+
+
+            fetch(`${process.env.NEXT_PUBLIC_API_URL}services/${lastWord}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data) {
+                        setService(data);
+                        setServices(data.services_list);
+                        setServicesPrices(data.services_price_list);
+
+                        fetch(`${process.env.NEXT_PUBLIC_API_URL}subservices/${data.id}`)
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (data) {
+                                    setSubservices(data);
+
+                                    fetch(`${process.env.NEXT_PUBLIC_API_URL}subservices/getDoctors`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({
+                                            doctors_ids: [...new Set(data.map((item: subservices) => parseInt((item.doctors_id) ? item.doctors_id : "0")))]
+                                        })
+                                    })
+                                        .then((res) => res.json())
+                                        .then((data) => {
+                                            if (data) {
+                                                setDoctors(data);
+                                            }
+                                        }
+                                        )
+                                        .catch((err) => {
+                                            console.log(err);
+                                        }
+                                        );
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            }
+                            );
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                }
+                );
+        }
+
+    }, [router.query.serviceHref]);
 
     return (
         <Container maxWidth={false} sx={{ pt: "16px", pb: "16px", p: width > 600 ? "0 !important" : undefined }}>

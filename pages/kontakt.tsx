@@ -12,54 +12,69 @@ import Link from '../app/components/navigation/Link';
 import { StyledContainer } from '../app/components/common/container/styledContainer';
 import SingleContactForm from '../app/components/common/singleContactForm';
 import { MailOutlineOutlined, Phone, WhatsApp } from '@mui/icons-material';
+import { company_info, employees, page_info } from '@prisma/client';
 
 const MapWithNoSSR = dynamic(() => import('../app/components/map/map'), {
     ssr: false,
 });
 
-export const getStaticProps: GetStaticProps = async () => {
-    const companyInfo = await prisma.company_info.findFirst();
-    const page_info = await prisma.page_info.findFirst(
-        {
-            where: {
-                page_slug: {
-                    contains: "/kontakt"
-                }
-            }
-        }
-    );
-    const employees = await prisma.employees.findMany(
-        {
-            where: {
-                employe_title: {
-                    contains: "doktor"
-                }
-            }
-        }
-    );
-    const reception = await prisma.employees.findFirst(
-        {
-            where: {
-                employe_title: {
-                    contains: "recepcija"
-                }
-            }
-        }
-    );
-    return { props: { reception, employees, companyInfo, page_info } };
-};
-
-const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Kontakt = () => {
     const router = useRouter();
     const { width } = useWindowSize();
     const { theme } = React.useContext(CustomThemeContext);
+
+    const [reception, setReception] = React.useState<employees | null>(null);
+    const [employees, setEmployees] = React.useState<employees[] | null>(null);
+    const [companyInfo, setCompanyInfo] = React.useState<company_info | null>(null);
+    const [page_info, setPageInfo] = React.useState<page_info | null>(null);
+
+    React.useEffect(() => {
+        fetch(process.env.NEXT_PUBLIC_API_URL + "company_info")
+            .then(res => res.json())
+            .then(data => {
+                setCompanyInfo(data);
+            }
+            )
+            .catch(err => console.log(err));
+
+        fetch(process.env.NEXT_PUBLIC_API_URL + "employees/doktor")
+            .then(res => res.json())
+            .then(data => {
+                setEmployees(data);
+            }
+            )
+            .catch(err => console.log(err));
+
+        fetch(process.env.NEXT_PUBLIC_API_URL + "employees/recepcija")
+            .then(res => res.json())
+            .then(data => {
+                setReception(data[0]);
+            }
+            )
+            .catch(err => console.log(err));
+
+        fetch(process.env.NEXT_PUBLIC_API_URL + "page_info/kontakt")
+            .then(res => res.json())
+            .then(data => {
+                setPageInfo(data);
+            }
+            )
+            .catch(err => console.log(err));
+
+        return () => {
+            setCompanyInfo(null);
+            setEmployees(null);
+            setReception(null);
+            setPageInfo(null);
+        }
+    }, []);
 
     return (
         <Container maxWidth={false} sx={{ pt: "16px", pb: "16px", p: width > 600 ? "0 !important" : undefined }}>
             {<SEO page_info={page_info} />
             }
             <StyledContainer>
-                <Title title={page_info.title} />
+                <Title title={page_info && page_info.title ? page_info.title : ""} />
                 <Grid sx={{
                     paddingBottom: "32px",
                     alignItems: "center",
@@ -86,7 +101,7 @@ const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStati
                                 Doktori Varela
                             </Typography>
                             {
-                                typeof employees !== "undefined" && employees.length > 0 ?
+                                typeof employees !== "undefined" && employees && employees.length > 0 ?
                                     <Box sx={{ mt: "4px" }}>
                                         <Typography>
                                             {employees[0].title + " " + employees[0].first_name + " " + employees[0].aditional_names + " " + employees[0].last_name}
@@ -94,6 +109,7 @@ const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStati
                                         <Typography>
                                             {employees[1].title + " " + employees[1].first_name + " " + employees[1].aditional_names + " " + employees[1].last_name}
                                         </Typography>
+                                        {employees[0].phone ?
                                         <Link
                                             href={"tel:"+(employees[0].phone).replace(/[\(\)0 ]/g, '')}
                                             sx={{
@@ -105,6 +121,7 @@ const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStati
                                             <Phone sx={{ fontSize: "18px", mr: "4px" }} />
                                             {employees[0].phone}
                                         </Link>
+                                        : null}
                                         <Link
                                             href={"mailto:"+employees[0].email}
                                             sx={{
@@ -132,6 +149,7 @@ const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStati
                                         <Typography>
                                             { reception.first_name + " " + reception.aditional_names + " " + reception.last_name}
                                         </Typography>
+                                        {reception.phone ?
                                         <Link
                                             href={"https://wa.me/"+(reception.phone).replace(/[\+\(\)0 ]/g, '')}
                                             sx={{
@@ -143,6 +161,7 @@ const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStati
                                             <WhatsApp sx={{ fontSize: "18px", mr: "4px" }} />
                                             {reception.phone}
                                         </Link>
+                                        : null}
                                         <Link
                                             href={"mailto:"+reception.email}
                                             sx={{
@@ -208,7 +227,9 @@ const Kontakt = ({ reception, employees, companyInfo, page_info }: InferGetStati
                     </Grid>
                 </Grid>
             </StyledContainer>
-            <MapWithNoSSR coords={companyInfo?.coords.split(",")} link={companyInfo?.address_url} title={companyInfo?.title} />
+            {companyInfo ?
+            <MapWithNoSSR coords={companyInfo.coords.split(",")} link={companyInfo.address_url ? companyInfo.address_url : ""} title={companyInfo.title ? companyInfo.title : ""} />
+            : null}
         </Container >
     );
 }

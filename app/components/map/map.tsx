@@ -4,8 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet';
 import { Box } from '@mui/material';
 import L, { LatLngExpression } from 'leaflet';
+import React from 'react';
 
-const LeafletMap = ({coords, link, title}: {coords: LatLngExpression, link: string, title: string}) => {
+const LeafletMap = ({coords, link, title}: {coords: any, link: string, title: string}) => {
     const icon = L.icon({
         iconUrl: "../../../icons/location.png",
         iconSize: [35, 35],

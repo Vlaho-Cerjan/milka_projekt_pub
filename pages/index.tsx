@@ -1,54 +1,50 @@
 import { Container } from '@mui/material';
-import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import SEO from '../app/components/common/SEO/SEO';
 import useWindowSize from '../app/utility/windowSize';
 import Greeting from '../app/components/home/greeting';
 import OurServices from '../app/components/home/ourServices';
 import OurTeam from '../app/components/home/ourTeam';
-import prisma from '../app/utility/prisma';
 //import OurNews from '../app/components/home/ourNews';
 import MissionAndVision from '../app/components/home/missionAndVision';
 import ContactForm from '../app/components/home/contactForm';
-
 import dynamic from 'next/dynamic';
 import HowToFindUs from '../app/components/home/howToFindUs';
 import React from 'react';
+import { blog, employees, page_info, services } from '@prisma/client';
 
 const MapWithNoSSR = dynamic(() => import('../app/components/map/map'), {
   ssr: false,
 });
 
-export const getStaticProps: GetStaticProps = async () => {
-  const services = await prisma.services.findMany({
-    where: {
-      active: 1
-    },
-    orderBy: {
-      item_order: "asc"
-    }
-  });
-  const news = await prisma.blog.findMany({
-    take: 4,
-  })
-  const employees = await prisma.employees.findMany({
-    where: {
-      active: 1
-    },
-  });
-  const companyInfo = await prisma.company_info.findFirst();
-  const page_info = await prisma.page_info.findFirst(
-    {
-      where: {
-        page_slug: "/"
-      }
-    }
-  );
-
-  return { props: { services, news, employees, companyInfo, page_info } };
-};
-
-const Home = ({ services, news, employees, companyInfo, page_info }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = () => {
   const { width } = useWindowSize();
+  const [services, setServices] = React.useState<services[]>([]);
+  const [news, setNews] = React.useState<blog[]>([]);
+  const [employees, setEmployees] = React.useState<employees[]>([]);
+  const [companyInfo, setCompanyInfo] = React.useState<any>(null);
+  const [page_info, setPageInfo] = React.useState<page_info | null>(null);
+
+  React.useEffect(() => {
+    // fetch all the data
+    fetch(process.env.NEXT_PUBLIC_API_URL + "homepage")
+      .then(res => res.json())
+      .then(data => {
+        setServices(data.services);
+        setNews(data.news);
+        setEmployees(data.employees);
+        setCompanyInfo(data.companyInfo);
+        setPageInfo(data.page_info);
+      })
+      .catch(err => console.log(err));
+
+    return () => {
+      setServices([]);
+      setNews([]);
+      setEmployees([]);
+      setCompanyInfo(null);
+      setPageInfo(null);
+    }
+  }, [])
 
   return (
     <Container maxWidth={false} sx={{ pt: "16px", pb: "16px", p: width > 600 ? "0 !important" : undefined }}>
@@ -60,10 +56,16 @@ const Home = ({ services, news, employees, companyInfo, page_info }: InferGetSta
         //<OurNews news={news} />
       }
       <OurServices services={services} />
+      {typeof companyInfo !== "undefined" && companyInfo !== null ?
       <ContactForm companyInfo={companyInfo} />
+      : null}
       <OurTeam employees={employees} />
+      {typeof companyInfo !== "undefined" && companyInfo !== null ?
       <HowToFindUs companyInfo={companyInfo} />
-      <MapWithNoSSR coords={companyInfo?.coords.split(",")} link={companyInfo?.address_url} title={companyInfo?.title} />
+      : null}
+      {typeof companyInfo !== "undefined" && companyInfo !== null && companyInfo.coords !== null ?
+      <MapWithNoSSR coords={companyInfo.coords.split(",")} link={companyInfo.address_url} title={companyInfo.title} />
+      : null}
     </Container >
   )
 }

@@ -157,6 +157,7 @@ const MobileLayout = ({ children, data }: MobileLayoutProps) => {
                     transformLabel={(title: string) => {
                         return title.charAt(0).toUpperCase() + title.slice(1).replace(/\-[a-z]/g, match => match.replace("-", " ").toUpperCase())
                     }}
+                    omitHrefList={["usluge"]}
                 />
             </Paper>
             <SwipeableDrawer

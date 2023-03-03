@@ -1,29 +1,14 @@
 import { Box, Button, Card, CardActions, CardContent, Container, Grid, styled, Typography } from '@mui/material';
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import Title from '../common/title/title';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CustomThemeContext } from '../../store/customThemeContext';
 import { StyledContainer } from '../common/container/styledContainer';
+import { employees } from '@prisma/client';
 
 interface OurTeamProps {
-    employees: {
-        id: number,
-        first_name: string,
-        aditional_names: string | null,
-        last_name: string,
-        title: string | null,
-        bio: string | null,
-        email: string | null,
-        phone: string | null,
-        img_src: string | null,
-        slug: string | null,
-        alt: string | null,
-        employe_title: string | null,
-        create_date: string,
-        update_date: string | null,
-        delete_date: string | null,
-    }[]
+    employees: employees[]
 }
 
 const StyledCard = styled(Card)(() => ({
@@ -31,7 +16,7 @@ const StyledCard = styled(Card)(() => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    textAlign:"center",
+    textAlign: "center",
     padding: "16px",
     'img.resImg': {
         border: "1px solid transparent !important",
@@ -45,32 +30,60 @@ const StyledCardContent = styled(CardContent)(() => ({
     justifyContent: "space-between"
 }))
 
-const OurTeam = ({employees}: OurTeamProps) => {
+const OurTeam = ({ employees }: OurTeamProps) => {
     const { theme } = useContext(CustomThemeContext);
 
+    const [imageWidth, setImageWidth] = React.useState<number | null>(0);
+
+    React.useEffect(() => {
+        // get width of image on first render
+        if (window) {
+            const imageRef = document.getElementById("employee_1");
+            if (imageRef) {
+                setImageWidth(imageRef.clientWidth);
+            }
+            // set event listener on window resize
+            window.addEventListener('resize', () => {
+                const imageRef = document.getElementById("employee_1");
+                if (imageRef && imageRef.clientWidth !== imageWidth) {
+                    setImageWidth(imageRef.clientWidth);
+                }
+            });
+        }
+
+        return () => {
+            // remove event listener on window resize
+            window.removeEventListener('resize', () => {
+                const imageRef = document.getElementById("employee_1");
+                if (imageRef) {
+                    setImageWidth(imageRef.clientWidth);
+                }
+            });
+        }
+    }, [employees]);
+
     const dataEmployes = (
-        employees.map(employe => {
-            return(
-                <Grid key={'employe_'+employe.id} item xs={12} sm={6} md={4} lg={3}>
+        employees.map((employe, index) => {
+            return (
+                <Grid key={'employee_' + employe.id} item xs={12} sm={6} md={4} lg={3}>
                     <StyledCard
                         variant="outlined"
                     >
-                        <Box sx={{ 
+                        <Box sx={{
+                            position: "relative",
+                            height: imageWidth + "px",
                             'img.resImg': {
                                 backgroundColor: theme.palette.primary.main,
                                 borderRadius: "50%"
                             }
                         }}>
                             <Image
-                                src={employe.img_src?employe.img_src:""}
-                                alt={employe.alt?employe.alt:""}
-                                width={270}
-                                height={273}
+                                src={employe.img_src ? employe.img_src : ""}
+                                alt={employe.alt ? employe.alt : ""}
+                                fill
                                 quality={90}
-                                layout="responsive"
+                                id={"employee_" + employe.id}
                                 className="resImg"
-                                objectFit="cover"
-                                sizes="250px"
                             />
                         </Box>
                         <StyledCardContent>
@@ -81,24 +94,24 @@ const OurTeam = ({employees}: OurTeamProps) => {
                                     textAlign="center"
                                     sx={{ pb: "16px", textTransform: "capitalize" }}
                                 >
-                                    {(employe.title?employe.title:"")+" "+employe.first_name+" "+(employe.aditional_names?employe.aditional_names:"")+" "+employe.last_name}
+                                    {(employe.title ? employe.title : "") + " " + employe.first_name + " " + (employe.aditional_names ? employe.aditional_names : "") + " " + employe.last_name}
                                 </Typography>
-                                {employe.employe_title?
+                                {employe.employee_title ?
+                                    <Typography
+                                        textAlign="center"
+                                    >
+                                        {employe.employee_title}
+                                    </Typography>
+                                    : null
+                                }
+                            </Box>
+                            {employe.bio ?
                                 <Typography
                                     textAlign="center"
                                 >
-                                    {employe.employe_title}
+                                    {employe.bio}
                                 </Typography>
-                                :null
-                                }
-                            </Box>
-                            {employe.bio?
-                            <Typography
-                                textAlign="center"
-                            >
-                                {employe.bio}
-                            </Typography>
-                            :null
+                                : null
                             }
                         </StyledCardContent>
                         {/*<CardActions sx={{ justifyContent: "center" }}>
@@ -123,7 +136,7 @@ const OurTeam = ({employees}: OurTeamProps) => {
         })
     )
 
-    return(
+    return (
         <StyledContainer>
             <Title title="Naš Tim" />
             <Box sx={{ display: "flex", justifyContent: "center" }}>

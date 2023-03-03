@@ -9,43 +9,41 @@ import React from 'react';
 import Title from '../app/components/common/title/title';
 import { StyledContainer } from '../app/components/common/container/styledContainer';
 import { ExpandMore } from '@mui/icons-material';
+import { faq, page_info } from '@prisma/client';
 
-export const getStaticProps: GetStaticProps = async () => {
-    const page_info = await prisma.page_info.findFirst(
-        {
-            where: {
-                page_slug: {
-                    contains: "/faq"
-                }
-            }
-        }
-    );
-
-    const faq = await prisma.faq.findMany(
-        {
-            where: {
-                active: 1
-            },
-            orderBy: {
-                faq_order: "asc"
-            }
-        }
-    );
-
-    return { props: { page_info, faq } };
-};
-
-const FAQ = ({ page_info, faq }: InferGetStaticPropsType<typeof getStaticProps>) => {
-    const router = useRouter();
+const FAQ = () => {
     const { width } = useWindowSize();
     const { theme } = React.useContext(CustomThemeContext);
-
+    const [faq, setFaq] = React.useState<faq[] | null>(null);
+    const [page_info, setPageInfo] = React.useState<page_info | null>(null);
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
+
+    React.useEffect(() => {
+        fetch(process.env.NEXT_PUBLIC_API_URL + "faq")
+            .then(res => res.json())
+            .then(data => {
+                setFaq(data);
+            }
+            )
+            .catch(err => console.log(err));
+
+        fetch(process.env.NEXT_PUBLIC_API_URL + "page_info/faq")
+            .then(res => res.json())
+            .then(data => {
+                setPageInfo(data);
+            }
+            )
+            .catch(err => console.log(err));
+
+        return () => {
+            setFaq(null);
+        }
+    }, []);
 
     return (
         <Container maxWidth={false} sx={{ pt: "16px", pb: "16px", p: width > 600 ? "0 !important" : undefined }}>
@@ -64,16 +62,16 @@ const FAQ = ({ page_info, faq }: InferGetStaticPropsType<typeof getStaticProps>)
                     }
                 }}
             >
-                <Title title={page_info.title} />
+                <Title title={page_info && page_info.title ? page_info.title : ""} />
                 <Box>
-                    {typeof faq !== "undefined" && faq.length > 0 ?
+                    {typeof faq !== "undefined" && faq && faq.length > 0 ?
                         faq.map((item: any, index: number) => {
                             return (
-                                <Accordion key={"faq_"+index} expanded={expanded === 'panel'+index} onChange={handleChange('panel'+index)}>
+                                <Accordion key={"faq_" + index} expanded={expanded === 'panel' + index} onChange={handleChange('panel' + index)}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMore />}
-                                        aria-controls={"panel"+index+"bh-content"}
-                                        id={"panel"+index+"bh-header"}
+                                        aria-controls={"panel" + index + "bh-content"}
+                                        id={"panel" + index + "bh-header"}
                                         sx={{
                                             '& .MuiAccordionSummary-content': {
                                                 margin: "24px 0",

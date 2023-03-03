@@ -2,6 +2,7 @@ import { Container, Box, Typography } from "@mui/material";
 import Title from "../common/title/title";
 import Link from "../navigation/Link";
 import { StyledContainer } from '../common/container/styledContainer';
+import React from "react";
 
 
 const HowToFindUs = ({companyInfo}: any) => {

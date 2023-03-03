@@ -27,6 +27,9 @@ const MissionAndVision = () => {
                     <Container
                         disableGutters
                         sx={{
+                            position: "relative",
+                            height: "540px",
+
                             'img.resImg': {
                                 border: "1px solid transparent !important",
                             }
@@ -35,13 +38,12 @@ const MissionAndVision = () => {
                         <Image
                             src="/images/home/misija-i-vizija.jpg"
                             alt="slika doktora kako operiraju pacijenta"
-                            width={1601}
-                            height={632}
                             quality={90}
-                            layout="responsive"
-                            objectFit="cover"
+                            fill
+                            style={{
+                                objectFit: "cover",
+                            }}
                             className="resImg"
-                            sizes="80vw"
                         />
                     </Container>
                     <Container
@@ -100,6 +102,8 @@ const MissionAndVision = () => {
                     <Container
                         disableGutters
                         sx={{
+                            position: "relative",
+                            height: "540px",
                             alignSelf: "stretch",
                             '> span': {
                                 height: "100% !important",
@@ -112,13 +116,9 @@ const MissionAndVision = () => {
                         <Image
                             src="/images/home/misija-i-vizija.jpg"
                             alt="slika doktora kako operiraju pacijenta"
-                            width={1601}
-                            height={1264}
+                            fill
                             quality={90}
-                            layout="responsive"
-                            objectFit="cover"
                             className="resImg"
-                            sizes="600px"
                         />
                     </Container>
                     <Container

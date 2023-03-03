@@ -6,6 +6,7 @@ import { CustomThemeContext } from '../../store/customThemeContext';
 import Link from '../navigation/Link';
 import { StyledContainer } from '../common/container/styledContainer';
 import SingleContactForm from '../common/singleContactForm';
+import React from 'react';
 
 const ContactForm = ({ companyInfo }: { companyInfo: any }) => {
     const { width } = useWindowSize();

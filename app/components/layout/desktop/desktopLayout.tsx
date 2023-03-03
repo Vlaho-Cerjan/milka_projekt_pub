@@ -311,6 +311,7 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                         transformLabel={(title: string) => {
                             return title.charAt(0).toUpperCase() + title.slice(1).replace(/\-[a-z]/g, match => match.replace("-", " ").toUpperCase())
                         }}
+                        omitHrefList={["usluge"]}
                     />
                 </Paper>
                 :
