@@ -14,11 +14,16 @@ const Layout = ({ children }: Props) => {
     const windowSize = useWindowSize();
     const [data, setData] = React.useState(null);
     React.useEffect(() => {
-        fetch('/api/layout-data')
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}layout_data`)
             .then((res) => res.json())
             .then((data) => {
-                setData(data)
-            })
+                setData(data);
+            }
+            )
+            .catch((err) => {
+                console.log(err);
+            }
+            );
     }, []);
 
     return (
