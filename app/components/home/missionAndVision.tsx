@@ -36,7 +36,7 @@ const MissionAndVision = () => {
                         }}
                     >
                         <Image
-                            src="/images/home/misija-i-vizija.jpg"
+                            src={process.env.NEXT_PUBLIC_IMG_URL + "/images/home/misija-i-vizija.jpg"}
                             alt="slika doktora kako operiraju pacijenta"
                             quality={90}
                             fill
@@ -114,7 +114,7 @@ const MissionAndVision = () => {
                         }}
                     >
                         <Image
-                            src="/images/home/misija-i-vizija.jpg"
+                            src={process.env.NEXT_PUBLIC_IMG_URL + "/images/home/misija-i-vizija.jpg"}
                             alt="slika doktora kako operiraju pacijenta"
                             fill
                             quality={90}

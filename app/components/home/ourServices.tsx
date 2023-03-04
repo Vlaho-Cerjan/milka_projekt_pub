@@ -45,7 +45,7 @@ const OurServices = ({services}: ServicesProps) => {
                             }}
                         >
                             <Image
-                                src={service.img_src ? service.img_src : ""}
+                                src={process.env.NEXT_PUBLIC_IMG_URL + (service.img_src ? service.img_src : "")}
                                 alt={service.alt ? service.alt : ""}
                                 fill
                                 style={{

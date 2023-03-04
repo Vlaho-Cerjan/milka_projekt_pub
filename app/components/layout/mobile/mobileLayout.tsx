@@ -283,7 +283,7 @@ const MobileLayout = ({ children, data }: MobileLayoutProps) => {
                         <Grid item xs={12}>
                             <Box textAlign="left">
                                 <Image
-                                    src={imageSrc}
+                                    src={process.env.NEXT_PUBLIC_IMG_URL + imageSrc}
                                     alt="logo image of Varela Clinic"
                                     width={138}
                                     height={93}

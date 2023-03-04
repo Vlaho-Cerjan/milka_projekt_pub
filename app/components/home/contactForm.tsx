@@ -18,7 +18,7 @@ const ContactForm = ({ companyInfo }: { companyInfo: any }) => {
                 {width > theme.breakpoints.values.md ?
                     <Grid item xs={12} md={4} sx={{ width: "100%", maxWidth: "640px", position: "relative" }}>
                         <Image
-                            src={isDark ? "/images/home/skincare-dark.jpg" : "/images/home/skincare.jpg"}
+                            src={process.env.NEXT_PUBLIC_IMG_URL + (isDark ? "/images/home/skincare-dark.jpg" : "/images/home/skincare.jpg")}
                             alt="pink flowers and a generic hand cream on a white table"
                             quality={100}
                             fill

@@ -47,7 +47,7 @@ const OurNews = ({news}: NewsProps) => {
                     <StyledCard variant="outlined">
                             <div>
                                 <Image
-                                    src={item.img_src?item.img_src:'/images/blog/blog.jpg'}
+                                    src={process.env.NEXT_PUBLIC_IMG_URL + (item.img_src?item.img_src:'/images/blog/blog.jpg')}
                                     alt={item.alt}
                                     width={item.img_src?1920:1280}
                                     height={item.img_src?1080:783}

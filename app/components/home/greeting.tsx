@@ -35,7 +35,7 @@ const Greeting = () => {
                             quality={100}
                             fill
                             sizes="100vw"
-                            src="/images/home/doctor-stock-transparent.png"
+                            src={process.env.NEXT_PUBLIC_IMG_URL + "/images/home/doctor-stock-transparent.png"}
                             style={{
                                 objectFit: "cover",
                             }}

@@ -78,7 +78,7 @@ const OurTeam = ({ employees }: OurTeamProps) => {
                             }
                         }}>
                             <Image
-                                src={employe.img_src ? employe.img_src : ""}
+                                src={process.env.NEXT_PUBLIC_IMG_URL + (employe.img_src ? employe.img_src : "")}
                                 alt={employe.alt ? employe.alt : ""}
                                 fill
                                 quality={90}

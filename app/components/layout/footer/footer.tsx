@@ -48,7 +48,7 @@ const Footer = ({ data }: { data: any }) => {
                                 <Box sx={{ mb: "24px", '& span': { marginLeft: "-30px !important" } }}>
                                     <Link href="/">
                                         <Image
-                                            src={imageSrc}
+                                            src={process.env.NEXT_PUBLIC_IMG_URL + imageSrc}
                                             alt="logo image of Varela Clinic"
                                             width={138}
                                             height={93}

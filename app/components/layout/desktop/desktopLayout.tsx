@@ -189,7 +189,7 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                             <Grid item xs={3} md={2}>
                                 <Box textAlign="left">
                                     <Image
-                                        src={imageSrc}
+                                        src={process.env.NEXT_PUBLIC_IMG_URL + imageSrc}
                                         alt="logo image of Varela Clinic"
                                         width={138}
                                         height={93}
