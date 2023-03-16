@@ -14,7 +14,7 @@ import { doctors, page_info, services, services_list, services_price_list, subse
 
 const Service = () => {
     const { width } = useWindowSize();
-    const { theme } = React.useContext(CustomThemeContext);
+    const { theme, isDark } = React.useContext(CustomThemeContext);
     const router = useRouter();
 
     const [page_info, setPageInfo] = React.useState<page_info | null>(null);
@@ -150,8 +150,9 @@ const Service = () => {
                                             transition={tempService.highlighted === 1 ? { duration: 1.5, ease: "easeInOut", times: [0, 0.5, 1], repeat: 2, repeatDelay: 1 } : { duration: 0.3 }}
                                             elevation={tempService.highlighted === 1 ? 4 : 2}
                                             sx={{
+                                                borderRadius: "22px",
                                                 height: "100%",
-                                                background: tempService.highlighted === 1 ? theme.palette.primary.main : undefined,
+                                                background: tempService.highlighted === 1 ? theme.palette.primary.main : isDark ? "rgba(255,255,255,0.05)" : undefined,
                                                 color: tempService.highlighted === 1 ? theme.palette.primary.contrastText : undefined,
                                             }}>
                                             <CardContent sx={{ textAlign: "center" }}>

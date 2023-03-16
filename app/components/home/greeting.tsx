@@ -19,6 +19,7 @@ const Greeting = () => {
             lineHeight: 0,
             backgroundColor: theme.palette.primary.main,
             maxHeight: "700px",
+            borderRadius: width > 600 ? 0 : "22px"
         }}
         >
             {(width > 600) ?
@@ -138,6 +139,7 @@ const Greeting = () => {
                                 color: 'primary.main',
                                 bgcolor: isDark ? "black" : "white",
                                 fontWeight: "600",
+                                marginBottom: "8px",
                                 '&:hover': {
                                     bgcolor: isDark ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.9)",
                                 },

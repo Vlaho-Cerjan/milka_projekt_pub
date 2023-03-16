@@ -28,15 +28,15 @@ const TopItem = styled(Box)(() => ({
 }))
 
 const StyledLink = styled(Link)(({ theme }) => ({
-    padding: "1.5% 2%",
+    padding: "8px 16px",
     marginRight: "16px",
     fontWeight: 600,
     fontSize: "1.2rem",
-    '&:hover': { backgroundColor: theme.palette.action.hover, borderRadius: "5px" },
+    '&:hover': { backgroundColor: theme.palette.action.hover, borderRadius: "22px" },
     '&.active': {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
-        borderRadius: "5px",
+        borderRadius: "22px",
 
         '&:hover': { backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }
     }
@@ -229,11 +229,11 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                                             fontSize: "1.2rem",
                                                             fontWeight: "600",
                                                             lineHeight: "1.5",
-                                                            padding: "1.5% 2%",
+                                                            padding: "8px 16px",
                                                             marginRight: "2px",
                                                             letterSpacing: "0.00938em",
                                                             borderRadius: 0,
-                                                            '&:hover': { backgroundColor: "action.hover", textDecoration: "underline", textDecorationColor: "inherit", borderRadius: "5px" },
+                                                            '&:hover': { backgroundColor: "action.hover", textDecoration: "underline", textDecorationColor: "inherit", borderRadius: "22px" },
                                                         }}
                                                         endIcon={<KeyboardArrowDownIcon sx={{ fontSize: "18px !important", }} />}
                                                     >
@@ -253,11 +253,16 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                                     MenuListProps={{
                                                         'aria-labelledby': 'navItem_' + navItem.id,
                                                     }}
+                                                    PaperProps={{
+                                                        sx:{
+                                                            borderRadius: "16px"
+                                                        }
+                                                    }}
                                                 >
                                                     {data.navigation.filter((itemChild: any) => itemChild.parent_id === navItem.id).map((navItemChild: any) => (
                                                         navItemChild.type === "link" ?
                                                             <MenuItem key={navItemChild.id} sx={{ p: 0, '&:not(:last-of-type)': { mb: "4px" } }} onClick={handleItemClose}>
-                                                                <StyledLink sx={{ mr: 0, p: "16px 32px", width: "100%", '&:hover': { backgroundColor: 'transparent', } }} href={typeof navItemChild.href !== "undefined" && navItemChild.href ? navItemChild.href : "#"}>{navItemChild.name}</StyledLink>
+                                                                <StyledLink sx={{ mr: 0, p: "8px 16px", width: "100%", '&:hover': { backgroundColor: 'transparent', } }} href={typeof navItemChild.href !== "undefined" && navItemChild.href ? navItemChild.href : "#"}>{navItemChild.name}</StyledLink>
                                                             </MenuItem>
                                                             : navItemChild.type === "button" ?
                                                                 <MenuItem key={navItemChild.id} sx={{ p: 0, '&:not(:last-of-type)': { mb: "4px" } }} onClick={handleItemClose}>
@@ -274,7 +279,8 @@ const DesktopLayout = ({ children, data }: DesktopLayoutProps) => {
                                                                             fontSize: "1.2rem",
                                                                             fontWeight: "600",
                                                                             lineHeight: "1.5",
-                                                                            padding: "2% 3%",
+                                                                            padding: "8px 16px",
+                                                                            minWidth: "auto",
                                                                             marginRight: "2px",
                                                                             letterSpacing: "0.00938em",
                                                                             borderRadius: 0,

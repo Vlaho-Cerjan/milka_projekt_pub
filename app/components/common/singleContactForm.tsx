@@ -120,7 +120,7 @@ const SingleContactForm = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button fullWidth variant='contained' type="submit" sx={{ fontSize: "18px", padding: "12px 0", fontWeight: "700 !important" }} >
+                        <Button fullWidth variant='contained' type="submit" sx={{ fontSize: "18px", padding: "12px 0", borderRadius: "12px !important", fontWeight: "700 !important" }} >
                             Pošalji
                         </Button>
                     </Grid>

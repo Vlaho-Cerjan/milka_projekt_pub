@@ -42,6 +42,7 @@ const MissionAndVision = () => {
                             fill
                             style={{
                                 objectFit: "cover",
+                                borderRadius: "22px"
                             }}
                             className="resImg"
                         />
@@ -119,6 +120,9 @@ const MissionAndVision = () => {
                             fill
                             quality={90}
                             className="resImg"
+                            style={{
+                                borderRadius: "22px"
+                            }}
                         />
                     </Container>
                     <Container

@@ -7,6 +7,9 @@ const lightThemeOptions: ThemeOptions = {
       main: "#0f7553",
     },
   },
+  shape: {
+    borderRadius: 12
+  },
   typography: {
     fontFamily: '"Noto Serif", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {

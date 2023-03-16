@@ -4,7 +4,7 @@ import React from "react";
 import { CustomThemeContext } from "../../../store/customThemeContext";
 
 const ServicesGrid = ({ services, servicesPrices }: { services: any, servicesPrices: any }) => {
-    const { theme } = React.useContext(CustomThemeContext);
+    const { theme, isDark } = React.useContext(CustomThemeContext);
 
     return (
         <Grid
@@ -26,8 +26,9 @@ const ServicesGrid = ({ services, servicesPrices }: { services: any, servicesPri
                         transition={service.highlighted === 1 ? { duration: 1.5, ease: "easeInOut", times: [0, 0.5, 1], repeat: 2, repeatDelay: 1 } : { duration: 0.3 }}
                         elevation={service.highlighted === 1 ? 4 : 2}
                         sx={{
+                            borderRadius: "22px",
                             height: "100%",
-                            background: service.highlighted === 1 ? theme.palette.primary.main : undefined,
+                            background: service.highlighted === 1 ? theme.palette.primary.main : isDark ? "rgba(255,255,255,0.05)" : undefined,
                             color: service.highlighted === 1 ? theme.palette.primary.contrastText : undefined,
                         }}>
                         <CardContent sx={{ textAlign: "center" }}>

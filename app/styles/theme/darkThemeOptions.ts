@@ -3,9 +3,12 @@ import { ThemeOptions } from '@mui/material/styles';
 const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: "dark",
-    primary:{
+    primary: {
       main: "#90caf9",
     },
+  },
+  shape: {
+    borderRadius: 12
   },
   typography: {
     fontFamily: '"Noto Serif", "Roboto", "Helvetica", "Arial", sans-serif',

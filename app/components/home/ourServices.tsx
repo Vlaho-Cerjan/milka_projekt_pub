@@ -1,4 +1,4 @@
-import { Container, Typography, Grid, Card, CardActions, styled, CardContent, Button, Box} from '@mui/material';
+import { Container, Typography, Grid, Card, CardActions, styled, CardContent, Button, Box } from '@mui/material';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,8 +12,10 @@ const StyledCard = styled(Card)(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
     paddingBottom: "16px",
+    borderRadius: "12px",
     'img.resImg': {
         border: "1px solid transparent !important",
+        borderRadius: "12px 12px 0 0",
     }
 }))
 
@@ -28,12 +30,12 @@ interface ServicesProps {
 }
 
 
-const OurServices = ({services}: ServicesProps) => {
+const OurServices = ({ services }: ServicesProps) => {
 
     const dataServices = (
         services.map(service => {
-            return(
-                <Grid key={'service_'+service.id} item xs={12} sm={6} md={4} lg={3}>
+            return (
+                <Grid key={'service_' + service.id} item xs={12} sm={6} md={4} lg={3}>
                     <StyledCard
                         variant="outlined"
                     >

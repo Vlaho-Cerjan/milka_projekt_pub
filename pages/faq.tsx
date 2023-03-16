@@ -67,7 +67,12 @@ const FAQ = () => {
                     {typeof faq !== "undefined" && faq && faq.length > 0 ?
                         faq.map((item: any, index: number) => {
                             return (
-                                <Accordion key={"faq_" + index} expanded={expanded === 'panel' + index} onChange={handleChange('panel' + index)}>
+                                <Accordion
+                                    sx={{
+                                        borderRadius: expanded === 'panel' + index ? "22px" : "0",
+                                        transition: "border-radius 0.4s ease-in-out",
+                                    }}
+                                key={"faq_" + index} expanded={expanded === 'panel' + index} onChange={handleChange('panel' + index)}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMore />}
                                         aria-controls={"panel" + index + "bh-content"}
@@ -83,7 +88,7 @@ const FAQ = () => {
                                                 [theme.breakpoints.down("sm")]: {
                                                     margin: "12px 0",
                                                 }
-                                            }
+                                            },
                                         }}
                                     >
                                         <Typography sx={{ fontSize: "22px" }} variant='h6' component="h3">

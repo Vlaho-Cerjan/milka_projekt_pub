@@ -23,6 +23,9 @@ const ContactForm = ({ companyInfo }: { companyInfo: any }) => {
                             quality={100}
                             fill
                             sizes="100vw"
+                            style={{
+                                borderRadius: isDark ? "22px": 0
+                            }}
                         />
                     </Grid>
                     :
