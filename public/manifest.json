@@ -4,13 +4,17 @@
     "short_name": "Varela",
     "start_url": "/",
     "lang": "hr-HR",
+    "background_color": "#ffffff",
+    "orientation": "any",
+    ""
     "theme_color": "#0f7553",
     "display": "browser",
     "icons": [
       {
         "src": "/icons/fav_512.png",
         "sizes": "512x512",
-        "type": "image/png"
+        "type": "image/png",
+        "purpose": "any maskable"
       },
       {
         "src": "/icons/fav_384.png",
